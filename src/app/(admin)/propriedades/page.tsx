@@ -15,7 +15,10 @@ export default async function PropriedadesPage() {
           <p className="text-muted-foreground mt-1">Gestão dos imóveis sob administração do Entre Marés.</p>
         </div>
         <div className="flex gap-2">
-          <form action={seedProperties}>
+          <form action={async () => {
+            'use server'
+            await seedProperties()
+          }}>
              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors border border-border">
                Gerar Dados Teste
              </button>
