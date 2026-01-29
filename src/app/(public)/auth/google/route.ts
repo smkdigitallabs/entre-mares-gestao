@@ -20,8 +20,8 @@ async function sha256(value: string) {
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const nextPath = url.searchParams.get("next") || "/";
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const clientId = process.env.GOOGLE_CLIENT_ID?.trim();
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
   const sessionSecret = process.env.APP_SESSION_SECRET;
 
   if (!clientId || !clientSecret || !sessionSecret) {
