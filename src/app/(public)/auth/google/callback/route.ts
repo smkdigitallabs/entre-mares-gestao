@@ -1,29 +1,5 @@
 import { NextResponse } from "next/server";
-
-const encoder = new TextEncoder();
-
-function base64UrlEncode(data: Uint8Array) {
-  let string = "";
-  data.forEach((byte) => {
-    string += String.fromCharCode(byte);
-  });
-  const base64 = btoa(string);
-  return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
-}
-
-async function signSession(payload: Record<string, unknown>, secret: string) {
-  const header = base64UrlEncode(encoder.encode(JSON.stringify({ alg: "HS256", typ: "JWT" })));
-  const body = base64UrlEncode(encoder.encode(JSON.stringify(payload)));
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signature = new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(`${header}.${body}`)));
-  return `${header}.${body}.${base64UrlEncode(signature)}`;
-}
+import { SignJWT } from "jose";
 
 function clearCookie(response: NextResponse, name: string) {
   response.cookies.set(name, "", {
@@ -98,7 +74,7 @@ export async function GET(request: Request) {
   const email = String(profile.email || "");
   const sub = String(profile.sub || "");
   const name = String(profile.name || "");
-  const picture = String(profile.picture || "");
+  // picture removida para reduzir tamanho do cookie
 
   if (!email || !sub) {
     return NextResponse.redirect(new URL("/login?error=oauth_failed", request.url));
@@ -111,17 +87,16 @@ export async function GET(request: Request) {
     }
   }
 
-  const now = Math.floor(Date.now() / 1000);
-  const sessionToken = await signSession(
-    {
-      sub,
-      email,
-      name,
-      picture,
-      exp: now + 60 * 60 * 24 * 7,
-    },
-    sessionSecret
-  );
+  const secret = new TextEncoder().encode(sessionSecret);
+  const sessionToken = await new SignJWT({
+    sub,
+    email,
+    name,
+  })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("7d")
+    .sign(secret);
 
   const redirectUrl = new URL("/", request.url);
   if (nextPath.startsWith("/")) {
