@@ -4,21 +4,36 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
-    --primary: 199 89% 48%;
+    /* Tema Praia & Mar */
+    --background: 40 30% 98%; /* Areia muito clara */
+    --foreground: 215 40% 20%; /* Azul marinho escuro */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 215 40% 20%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 40% 20%;
+    
+    --primary: 195 85% 45%; /* Azul Turquesa Tropical */
     --primary-foreground: 0 0% 100%;
-    --secondary: 215 16% 47%;
-    --secondary-foreground: 0 0% 100%;
-    --accent: 38 96% 52%;
+    
+    --secondary: 45 40% 90%; /* Areia Dourada Suave */
+    --secondary-foreground: 215 40% 30%;
+    
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 20% 50%;
+    
+    --accent: 35 90% 60%; /* Pôr do sol / Coral */
     --accent-foreground: 0 0% 100%;
+    
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 199 89% 48%;
+    --ring: 195 85% 45%;
+    
+    --radius: 0.5rem;
   }
 
   body {
