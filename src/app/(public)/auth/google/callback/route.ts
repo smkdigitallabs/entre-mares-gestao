@@ -41,10 +41,11 @@ export async function GET(request: Request) {
   const state = url.searchParams.get("state");
   const clientId = process.env.GOOGLE_CLIENT_ID?.trim();
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
-  const sessionSecret = process.env.APP_SESSION_SECRET;
+  const sessionSecret = process.env.APP_SESSION_SECRET?.trim();
   const allowedEmails = process.env.APP_ALLOWED_EMAILS;
 
   if (!clientId || !clientSecret || !sessionSecret) {
+    console.error("[Auth] Missing environment variables");
     return NextResponse.redirect(new URL("/login?error=missing_env", request.url));
   }
 

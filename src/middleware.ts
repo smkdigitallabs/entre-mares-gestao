@@ -53,9 +53,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const sessionSecret = process.env.APP_SESSION_SECRET;
+  const sessionSecret = process.env.APP_SESSION_SECRET?.trim();
 
   if (!sessionSecret) {
+    console.error("[Middleware] APP_SESSION_SECRET is missing");
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("error", "missing_env");
@@ -65,6 +66,7 @@ export async function middleware(request: NextRequest) {
   const cookieToken = request.cookies.get("em_session")?.value;
 
   if (!cookieToken) {
+    console.log(`[Middleware] No token found for path: ${pathname}`);
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("next", pathname);
@@ -74,6 +76,7 @@ export async function middleware(request: NextRequest) {
   const verified = await verifySessionToken(cookieToken, sessionSecret);
 
   if (!verified) {
+    console.log(`[Middleware] Token verification failed for path: ${pathname}`);
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("next", pathname);
