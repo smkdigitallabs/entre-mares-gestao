@@ -1,0 +1,16 @@
+name: Website Keep-Alive
+
+on:
+  schedule:
+    # Roda a cada 10 minutos
+    - cron: "*/10 * * * *"
+  workflow_dispatch: # Permite rodar manualmente se quiser testar
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Health Check Endpoint
+        run: |
+          curl -I https://entre-mares-gestao.vercel.app/api/health
+          echo "Ping sent to keep Neon DB and Vercel Functions warm."
