@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id          String        @id @default(cuid())
+  name        String
+  address     String?
+  ownerId     String?
+  reservations Reservation[]
+  tasks       Task[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Reservation {
+  id            String    @id @default(cuid())
+  propertyId    String
+  property      Property  @relation(fields: [propertyId], references: [id])
+  guestName     String
+  checkIn       DateTime
+  checkOut      DateTime
+  status        String    @default("confirmed") // confirmed, cancelled, completed
+  totalValue    Decimal   @db.Decimal(10, 2)
+  commission    Decimal   @db.Decimal(10, 2)
+  transactions  Transaction[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Transaction {
+  id            String       @id @default(cuid())
+  type          String       // gain, expense
+  category      String       // rental, cleaning, maintenance, convenience, fee
+  amount        Decimal      @db.Decimal(10, 2)
+  date          DateTime     @default(now())
+  description   String?
+  reservationId String?
+  reservation   Reservation? @relation(fields: [reservationId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  dueDate     DateTime
+  status      String    @default("pending") // pending, in_progress, completed
+  priority    String    @default("medium")  // low, medium, high
+  propertyId  String?
+  property    Property? @relation(fields: [propertyId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model MarketingPost {
+  id            String    @id @default(cuid())
+  title         String
+  contentPlan   String?
+  platform      String    // instagram, facebook, whatsapp
+  scheduledDate DateTime?
+  status        String    @default("draft") // draft, scheduled, published
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
