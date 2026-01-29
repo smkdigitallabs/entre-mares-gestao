@@ -1,37 +1,27 @@
 import { 
-  Instagram, 
-  MessageCircle, 
   Plus, 
   Calendar,
   Sparkles,
   Lightbulb
 } from "lucide-react";
+import { getMarketingPosts, seedMarketingPosts } from "@/app/actions/marketing";
+import { MarketingPostCard } from "@/components/admin/marketing-post-card";
+import { MarketingFormDialog } from "@/components/admin/marketing-form-dialog";
 
-const contentIdeas = [
-  {
-    id: 1,
-    title: "O Cuidado Silencioso",
-    platform: "Instagram",
-    description: "Mostrar detalhes da limpeza e organização antes do check-in. Foco no pilar 'Cuidado Constante'.",
-    tone: "Calmo e Profissional"
-  },
-  {
-    id: 2,
-    title: "Dica de Praia: Prainha",
-    platform: "Instagram/Status",
-    description: "Sugerir a Prainha para famílias. Mencionar a tranquilidade e a segurança local.",
-    tone: "Acolhedor e Informativo"
-  },
-  {
-    id: 3,
-    title: "Abertura de Datas: Carnaval",
-    platform: "WhatsApp/Instagram",
-    description: "Anunciar disponibilidade para o Carnaval com foco em 'Tranquilidade' (fugir do agito).",
-    tone: "Presente e Claro"
+export const dynamic = 'force-dynamic';
+
+export default async function MarketingPage() {
+  const { data: posts } = await getMarketingPosts();
+  
+  let displayPosts = posts;
+  
+  // Seeding inicial se não houver posts
+  if (!posts || posts.length === 0) {
+    await seedMarketingPosts();
+    const res = await getMarketingPosts();
+    displayPosts = res.data || [];
   }
-];
 
-export default function MarketingPage() {
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-end">
@@ -39,10 +29,7 @@ export default function MarketingPage() {
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Marketing & Divulgação</h1>
           <p className="text-slate-500 mt-1">Planejamento de conteúdo e presença digital do Entre Marés.</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg text-sm font-medium hover:bg-sky-700 transition-colors shadow-lg shadow-sky-600/20">
-          <Plus size={18} />
-          Novo Planejamento
-        </button>
+        <MarketingFormDialog />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -82,27 +69,8 @@ export default function MarketingPage() {
               Ideias de Conteúdo
             </h2>
             <div className="grid grid-cols-1 gap-4">
-              {contentIdeas.map((idea) => (
-                <div key={idea.id} className="bg-white rounded-xl border p-5 hover:border-sky-200 transition-all group">
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex items-center gap-2">
-                      {idea.platform === 'Instagram' ? (
-                        <Instagram className="text-pink-500" size={18} />
-                      ) : (
-                        <MessageCircle className="text-emerald-500" size={18} />
-                      )}
-                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">{idea.platform}</span>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-600 border border-sky-100">
-                      {idea.tone}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-1">{idea.title}</h3>
-                  <p className="text-sm text-slate-500">{idea.description}</p>
-                  <button className="mt-4 text-sm font-semibold text-sky-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                    Criar rascunho →
-                  </button>
-                </div>
+              {displayPosts?.map((post) => (
+                <MarketingPostCard key={post.id} post={post} />
               ))}
             </div>
           </div>

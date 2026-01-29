@@ -15,6 +15,23 @@ export async function getProperties() {
   }
 }
 
+export async function createProperty(data: { name: string; address: string; ownerId?: string }) {
+  try {
+    await prisma.property.create({
+      data: {
+        name: data.name,
+        address: data.address,
+        ownerId: data.ownerId,
+      }
+    })
+    revalidatePath('/propriedades')
+    return { success: true }
+  } catch (error) {
+    console.error("Erro ao criar propriedade:", error)
+    return { success: false, error: "Falha ao criar propriedade" }
+  }
+}
+
 export async function deleteProperty(id: string) {
   try {
     await prisma.property.delete({

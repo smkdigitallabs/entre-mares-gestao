@@ -1,6 +1,7 @@
 import { Plus, Search } from "lucide-react";
 import { getProperties, seedProperties } from "@/app/actions/properties";
 import { PropertyCard } from "@/components/admin/property-card";
+import { PropertyFormDialog } from "@/components/admin/property-form-dialog";
 
 export const dynamic = 'force-dynamic'; // Garantir que não faça cache estático
 
@@ -23,10 +24,7 @@ export default async function PropriedadesPage() {
                Gerar Dados Teste
              </button>
            </form>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
-            <Plus size={18} />
-            Nova Propriedade
-          </button>
+          <PropertyFormDialog />
         </div>
       </div>
 

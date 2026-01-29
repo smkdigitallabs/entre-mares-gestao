@@ -65,6 +65,7 @@ model MarketingPost {
   title         String
   contentPlan   String?
   platform      String    // instagram, facebook, whatsapp
+  tone          String?
   scheduledDate DateTime?
   status        String    @default("draft") // draft, scheduled, published
   createdAt     DateTime  @default(now())
