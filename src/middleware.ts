@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const publicPaths = ["/login", "/auth/google", "/auth/google/callback", "/auth/logout"];
+const publicPaths = ["/login", "/auth/google", "/auth/google/callback", "/auth/logout", "/api/debug-session"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -28,18 +28,21 @@ export async function middleware(request: NextRequest) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("next", pathname);
+    loginUrl.searchParams.set("reason", "no_token");
     return NextResponse.redirect(loginUrl);
   }
 
   try {
     const secret = new TextEncoder().encode(sessionSecret);
-    await jwtVerify(cookieToken, secret);
+    await jwtVerify(cookieToken, secret, { clockTolerance: 15 });
     return NextResponse.next();
-  } catch (error) {
+  } catch (error: any) {
     console.log(`[Middleware] Token verification failed for path: ${pathname}`, error);
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("next", pathname);
+    loginUrl.searchParams.set("reason", "verify_failed");
+    loginUrl.searchParams.set("code", error.code || "unknown");
     return NextResponse.redirect(loginUrl);
   }
 }
