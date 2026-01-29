@@ -16,6 +16,7 @@ export async function GET(request: Request) {
   const diagnostic: any = {
     hasToken: !!token,
     tokenPreview: token ? `${token.substring(0, 10)}...` : null,
+    cookieHeaderLength: cookieHeader?.length || 0,
     hasSecret: !!secretStr,
     secretLength: secretStr?.length,
     env: process.env.NODE_ENV,

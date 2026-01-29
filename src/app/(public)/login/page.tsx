@@ -55,12 +55,12 @@ function LoginForm() {
             </div>
           ) : null}
 
-          <Link
+          <a
             href={`/auth/google?next=${encodeURIComponent(nextPath)}`}
             className="w-full rounded-lg bg-slate-900 text-white py-2 text-sm font-medium hover:bg-slate-800 transition-colors flex items-center justify-center"
           >
             Entrar com Google
-          </Link>
+          </a>
         </div>
       </div>
     </div>

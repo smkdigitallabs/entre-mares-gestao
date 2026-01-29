@@ -43,6 +43,7 @@ export function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
+            prefetch={false}
             className={cn(
               "flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200",
               pathname === item.href 
@@ -65,12 +66,12 @@ export function Sidebar() {
               <span className="text-sm text-foreground">Sistema Online</span>
             </div>
           </div>
-          <Link
+          <a
             href="/auth/logout"
             className="w-full block text-sm font-medium text-muted-foreground border border-border rounded-md py-2 hover:bg-background hover:text-foreground transition-all text-center bg-background/50"
           >
             Sair
-          </Link>
+          </a>
           <div className="text-center pt-1 border-t border-border/50 mt-2">
             <span className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">v{packageJson.version}</span>
           </div>
