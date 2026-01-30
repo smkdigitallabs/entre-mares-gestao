@@ -1,0 +1,1 @@
+process.stdout.write("postgresql://neondb_owner:npg_2kPKXDLOlR6H@ep-fragrant-queen-acanmzdw.sa-east-1.aws.neon.tech/neondb?sslmode=require");
