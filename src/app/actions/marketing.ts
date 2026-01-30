@@ -2,8 +2,12 @@
 
 import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
+import { auth } from "@clerk/nextjs/server"
 
 export async function getMarketingPosts() {
+  const { userId } = await auth();
+  if (!userId) return { error: "Não autorizado" };
+
   try {
     const posts = await prisma.marketingPost.findMany({
       orderBy: { createdAt: 'desc' }
@@ -21,6 +25,9 @@ export async function createMarketingPost(data: {
   contentPlan: string
   tone: string
 }) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const post = await prisma.marketingPost.create({
       data: {
@@ -37,6 +44,9 @@ export async function createMarketingPost(data: {
 }
 
 export async function deleteMarketingPost(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.marketingPost.delete({
       where: { id }
@@ -50,6 +60,9 @@ export async function deleteMarketingPost(id: string) {
 }
 
 export async function seedMarketingPosts() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const count = await prisma.marketingPost.count()
     if (count > 0) return { success: true, message: "Já existem posts" }

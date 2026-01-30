@@ -2,8 +2,12 @@
 
 import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
+import { auth } from "@clerk/nextjs/server"
 
 export async function getTransactions() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const transactions = await prisma.transaction.findMany({
       orderBy: { date: 'desc' },
@@ -25,6 +29,9 @@ export async function createTransaction(data: {
   type: string;
   date?: Date;
 }) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.transaction.create({
       data: {
@@ -44,6 +51,9 @@ export async function createTransaction(data: {
 }
 
 export async function deleteTransaction(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.transaction.delete({
       where: { id }
@@ -57,6 +67,9 @@ export async function deleteTransaction(id: string) {
 }
 
 export async function seedTransactions() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const count = await prisma.transaction.count();
     if (count > 0) return { success: false, message: "Banco já possui dados" };
@@ -103,7 +116,7 @@ export async function seedTransactions() {
     revalidatePath('/financeiro')
     return { success: true, message: "Transações de exemplo criadas" }
   } catch (error) {
-    console.error("Erro ao popular transações:", error)
-    return { success: false, error: "Falha ao popular transações" }
+    console.error("Erro ao seedar transações:", error)
+    return { success: false, error: "Falha ao criar transações iniciais" }
   }
 }

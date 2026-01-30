@@ -2,8 +2,12 @@
 
 import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
+import { auth } from "@clerk/nextjs/server"
 
 export async function getTasks() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const tasks = await prisma.task.findMany({
       orderBy: { dueDate: 'asc' },
@@ -24,6 +28,9 @@ export async function createTask(data: {
   priority: string;
   description?: string;
 }) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.task.create({
       data: {
@@ -43,6 +50,9 @@ export async function createTask(data: {
 }
 
 export async function toggleTaskStatus(id: string, currentStatus: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const newStatus = currentStatus === 'completed' ? 'pending' : 'completed';
     await prisma.task.update({
@@ -58,6 +68,9 @@ export async function toggleTaskStatus(id: string, currentStatus: string) {
 }
 
 export async function deleteTask(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.task.delete({
       where: { id }
@@ -71,6 +84,9 @@ export async function deleteTask(id: string) {
 }
 
 export async function seedTasks() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const count = await prisma.task.count();
     if (count > 0) return { success: false, message: "Banco já possui tarefas" };
@@ -97,27 +113,12 @@ export async function seedTasks() {
           priority: "medium",
           description: "cleaning"
         },
-        { 
-          title: "Reposição de Kit Conveniência", 
-          dueDate: new Date("2026-01-29T11:30:00"), 
-          propertyId: propertyId, 
-          status: "pending",
-          priority: "low",
-          description: "maintenance"
-        },
-        { 
-          title: "Tempo com a Pequena (Passeio)", 
-          dueDate: new Date("2026-01-29T16:00:00"), 
-          status: "pending",
-          priority: "high",
-          description: "personal"
-        }
       ]
     })
     revalidatePath('/operacional')
     return { success: true, message: "Tarefas de exemplo criadas" }
   } catch (error) {
-    console.error("Erro ao popular tarefas:", error)
-    return { success: false, error: "Falha ao popular tarefas" }
+    console.error("Erro ao seedar tarefas:", error)
+    return { success: false, error: "Falha ao criar tarefas iniciais" }
   }
 }

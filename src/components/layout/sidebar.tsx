@@ -11,6 +11,7 @@ import {
   Home,
   Waves
 } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import packageJson from "../../../package.json";
 
@@ -59,6 +60,11 @@ export function Sidebar() {
 
       <div className="p-4 border-t border-border mt-auto">
         <div className="bg-secondary/30 rounded-lg p-3 space-y-3">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-sm font-medium text-muted-foreground">Conta</span>
+            <UserButton showName />
+          </div>
+
           <div>
             <p className="text-xs font-semibold text-muted-foreground uppercase">Status</p>
             <div className="flex items-center gap-2 mt-1">
@@ -66,12 +72,7 @@ export function Sidebar() {
               <span className="text-sm text-foreground">Sistema Online</span>
             </div>
           </div>
-          <a
-            href="/auth/logout"
-            className="w-full block text-sm font-medium text-muted-foreground border border-border rounded-md py-2 hover:bg-background hover:text-foreground transition-all text-center bg-background/50"
-          >
-            Sair
-          </a>
+          
           <div className="text-center pt-1 border-t border-border/50 mt-2">
             <span className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">v{packageJson.version}</span>
           </div>
