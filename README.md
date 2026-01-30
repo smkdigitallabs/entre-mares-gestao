@@ -9,6 +9,7 @@ Aplicação desenvolvida para gestão profissional de imóveis de temporada, foc
 - **Tailwind CSS 4** (Estilização Moderna)
 - **Prisma** (ORM Type-safe)
 - **Neon** (Serverless PostgreSQL)
+- **Clerk** (Autenticação e Gestão de Usuários)
 
 ### ⚡ Otimizações de Performance (Free Tier Strategy)
 - **Database Region:** `us-east-1` (N. Virginia) para menor latência global.
@@ -19,7 +20,7 @@ Aplicação desenvolvida para gestão profissional de imóveis de temporada, foc
 
 ### 🛡️ Segurança
 - **Headers OWASP:** Proteção contra XSS, Clickjacking e Sniffing configurados no `next.config.ts`.
-- **Middleware:** Proteção de rotas privadas e gestão de sessão via JWT manual.
+- **Middleware:** Proteção de rotas privadas via Clerk Middleware.
 - **Environment:** Variáveis sensíveis gerenciadas via Vercel Vault.
 
 ## 📁 Estrutura do Projeto
@@ -34,8 +35,7 @@ Aplicação desenvolvida para gestão profissional de imóveis de temporada, foc
 2. Configure as variáveis de ambiente:
    - `DATABASE_URL` (Neon Connection Pooler)
    - `DIRECT_URL` (Neon Direct Connection)
-   - `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET` (Google Cloud Console)
-   - `APP_SESSION_SECRET` (Chave forte para assinatura de cookies)
+   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` & `CLERK_SECRET_KEY` (Clerk Dashboard)
 3. Execute `npm install`.
 4. Execute `npx prisma db push` para sincronizar o banco.
 5. Execute `npm run dev`.
