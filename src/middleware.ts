@@ -1,52 +1,22 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const publicPaths = ["/login", "/auth/google", "/auth/google/callback", "/auth/logout", "/api/debug-session"];
+const isPublicRoute = createRouteMatcher([
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/api/health"
+]);
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  if (publicPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
-    return NextResponse.next();
+export default clerkMiddleware(async (auth, request) => {
+  if (!isPublicRoute(request)) {
+    await auth.protect();
   }
-
-  const sessionSecret = process.env.APP_SESSION_SECRET?.trim();
-
-  if (!sessionSecret) {
-    console.error("[Middleware] APP_SESSION_SECRET is missing");
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    loginUrl.searchParams.set("error", "missing_env");
-    return NextResponse.redirect(loginUrl);
-  }
-
-  const cookieToken = request.cookies.get("em_session")?.value;
-
-  if (!cookieToken) {
-    console.log(`[Middleware] No token found for path: ${pathname}`);
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    loginUrl.searchParams.set("next", pathname);
-    loginUrl.searchParams.set("reason", "no_token");
-    return NextResponse.redirect(loginUrl);
-  }
-
-  try {
-    const secret = new TextEncoder().encode(sessionSecret);
-    await jwtVerify(cookieToken, secret, { clockTolerance: 15 });
-    return NextResponse.next();
-  } catch (error: any) {
-    console.log(`[Middleware] Token verification failed for path: ${pathname}`, error);
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    loginUrl.searchParams.set("next", pathname);
-    loginUrl.searchParams.set("reason", "verify_failed");
-    loginUrl.searchParams.set("code", error.code || "unknown");
-    return NextResponse.redirect(loginUrl);
-  }
-}
+});
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.png$).*)"],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };

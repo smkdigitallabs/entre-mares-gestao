@@ -2,8 +2,12 @@
 
 import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
+import { auth } from "@clerk/nextjs/server"
 
 export async function getProperties() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const properties = await prisma.property.findMany({
       orderBy: { createdAt: 'desc' }
@@ -16,6 +20,9 @@ export async function getProperties() {
 }
 
 export async function createProperty(data: { name: string; address: string; ownerId?: string }) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.property.create({
       data: {
@@ -33,6 +40,9 @@ export async function createProperty(data: { name: string; address: string; owne
 }
 
 export async function deleteProperty(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.property.delete({
       where: { id }
@@ -46,6 +56,9 @@ export async function deleteProperty(id: string) {
 }
 
 export async function seedProperties() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
   try {
     const count = await prisma.property.count();
     if (count > 0) return { success: false, message: "Banco já possui dados" };

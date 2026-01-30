@@ -1,6 +1,6 @@
 {
   "name": "entre-mares-gestao",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "scripts": {
     "dev": "node dev-timer.js",
@@ -12,6 +12,7 @@
     "prisma:push": "prisma db push"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.37.1",
     "@prisma/client": "^6.2.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-label": "^2.1.0",
@@ -23,7 +24,6 @@
     "@vercel/speed-insights": "^1.3.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "jose": "^6.1.3",
     "lucide-react": "^0.453.0",
     "next": "^16.1.6",
     "react": "19.0.0",
