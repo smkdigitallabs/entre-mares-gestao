@@ -27,6 +27,9 @@
 # vercel
 .vercel
 
+# IA Sync
+IA_SYNC/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
