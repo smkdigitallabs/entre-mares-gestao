@@ -14,8 +14,10 @@ import {
 } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
 import packageJson from "../../../package.json";
 import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 
 const menuItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -30,8 +32,12 @@ const menuItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const [isOnline, setIsOnline] = useState<boolean | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    // Fechar ao mudar de rota em mobile
+    setIsOpen(false);
+  }, [pathname]);
     const checkHealth = async () => {
       try {
         const res = await fetch("/api/health");
@@ -47,8 +53,28 @@ export function Sidebar() {
   }, []);
 
   return (
-    <aside className="w-64 bg-background/80 backdrop-blur-md border-r border-border flex flex-col h-screen sticky top-0 transition-colors">
-      <div className="p-6 flex items-center gap-2 border-b border-border">
+    <>
+      {/* Mobile Toggle Button */}
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden fixed top-3 right-4 z-[60] p-2 bg-primary text-primary-foreground rounded-lg shadow-lg transition-transform active:scale-95"
+      >
+        {isOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
+
+      {/* Overlay for Mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      <aside className={cn(
+        "w-64 bg-background/80 backdrop-blur-md border-r border-border flex flex-col h-screen fixed lg:sticky top-0 transition-all duration-300 z-50",
+        isOpen ? "left-0" : "-left-64 lg:left-0"
+      )}>
+        <div className="p-6 flex items-center gap-2 border-b border-border">
         <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20 transition-colors">
           <Waves size={24} />
         </div>
@@ -97,6 +123,10 @@ export function Sidebar() {
               </span>
             </div>
           </div>
+
+          <div className="pt-2">
+            <ThemeToggle />
+          </div>
           
           <div className="text-center pt-1 border-t border-border/50 mt-2">
             <span className="text-[10px] text-muted-foreground font-mono tracking-wider">v{packageJson.version}</span>
@@ -104,5 +134,6 @@ export function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }

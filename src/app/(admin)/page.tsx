@@ -43,9 +43,9 @@ export default async function Dashboard() {
     <div className="space-y-8">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Bom dia! 👋</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Bom dia! 👋</h1>
           <div className="flex items-center gap-3 mt-1">
-            <p className="text-slate-500">Aqui está o que está acontecendo no Entre Marés hoje.</p>
+            <p className="text-muted-foreground">Aqui está o que está acontecendo no Entre Marés hoje.</p>
             <PageTutorial />
           </div>
         </div>
@@ -96,7 +96,7 @@ export default async function Dashboard() {
               <ViewAllButton section="tasks" />
             </div>
           </div>
-          <div className="bg-white rounded-xl border p-6 space-y-4">
+          <div className="bg-card rounded-xl border border-border p-6 space-y-4 shadow-sm">
             {tasks.length > 0 ? (
               tasks.map((task: any) => (
                 <ChallengeItem 
@@ -178,14 +178,14 @@ type ChallengeItemProps = {
 
 function StatCard({ title, value, icon, trend, id }: StatCardProps) {
   return (
-    <div id={id} className="bg-white p-6 rounded-xl border shadow-sm space-y-2">
+    <div id={id} className="bg-card p-6 rounded-xl border border-border shadow-sm space-y-2">
       <div className="flex justify-between items-start">
-        <div className="p-2 bg-slate-50 rounded-lg">{icon}</div>
-        <span className="text-xs font-medium text-slate-400">{trend}</span>
+        <div className="p-2 bg-secondary/50 rounded-lg">{icon}</div>
+        <span className="text-xs font-medium text-muted-foreground">{trend}</span>
       </div>
       <div className="mt-4">
-        <p className="text-sm text-slate-500">{title}</p>
-        <p className="text-2xl font-bold text-slate-900">{value}</p>
+        <p className="text-sm text-muted-foreground">{title}</p>
+        <p className="text-2xl font-bold text-foreground">{value}</p>
       </div>
     </div>
   );
@@ -193,27 +193,27 @@ function StatCard({ title, value, icon, trend, id }: StatCardProps) {
 
 function ChallengeItem({ title, time, category, status, isPersonal }: ChallengeItemProps) {
   return (
-    <div className={`flex items-center justify-between p-3 rounded-lg border ${isPersonal ? 'bg-rose-50 border-rose-100' : 'bg-slate-50'}`}>
+    <div className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
+      isPersonal 
+        ? 'bg-rose-50/50 border-rose-100 dark:bg-rose-950/20 dark:border-rose-900/30' 
+        : 'bg-secondary/20 border-border'
+    }`}>
       <div className="flex items-center gap-3">
         {status === 'completed' ? (
           <CheckCircle2 className="text-emerald-500" size={20} />
         ) : (
-          <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
+          <div className={`w-5 h-5 rounded-full border-2 ${isPersonal ? 'border-rose-200' : 'border-slate-300'}`} />
         )}
         <div>
-          <p className={`font-medium text-sm ${status === 'completed' ? 'line-through text-slate-400' : 'text-slate-900'}`}>
-            {title}
-          </p>
+          <p className={`text-sm font-medium ${status === 'completed' ? 'text-muted-foreground line-through' : 'text-foreground'}`}>{title}</p>
           <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-xs text-slate-500">
-              {time}
-            </span>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-white border text-slate-400">
-              {category}
-            </span>
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{category}</span>
+            <span className="text-[10px] text-muted-foreground">•</span>
+            <span className="text-[10px] text-muted-foreground font-medium">{time}</span>
           </div>
         </div>
       </div>
+      <ArrowRight className="text-muted-foreground/30" size={16} />
     </div>
   );
 }

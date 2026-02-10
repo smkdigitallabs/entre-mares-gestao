@@ -18,9 +18,9 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
     <div className="space-y-8">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Operacional & Tempo</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Operacional & Tempo</h1>
           <div className="flex items-center gap-3 mt-1">
-            <p className="text-slate-500">Gestão de rotina, tarefas e tempo pessoal.</p>
+            <p className="text-muted-foreground">Gestão de rotina, tarefas e tempo pessoal.</p>
             <PageTutorial />
           </div>
         </div>
@@ -29,7 +29,7 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
             'use server'
             await seedTasks()
           }}>
-             <SubmitButton className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+             <SubmitButton className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors border border-border">
                Gerar Dados Teste
              </SubmitButton>
            </form>
@@ -43,9 +43,9 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
         <div id="calendar-widget" className="xl:col-span-1 space-y-6">
           <Calendar />
 
-          <div className="bg-sky-50 rounded-xl border border-sky-100 p-6">
-            <h3 className="font-bold text-sky-900 text-sm mb-3">Lembrete do Manual</h3>
-            <p className="text-xs text-sky-800 leading-relaxed">
+          <div className="bg-primary/5 rounded-xl border border-primary/20 p-6">
+            <h3 className="font-bold text-primary text-sm mb-3">Lembrete do Manual</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
               &quot;Nada deve ser improvisado ou tratado com pressa.&quot; 
               <br/><br/>
               Garanta que o imóvel esteja 100% pronto 1 hora antes do check-in previsto.
@@ -62,8 +62,8 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
               <TaskItem key={task.id} task={task} />
             ))}
             {(!tasks || tasks.length === 0) && (
-              <div className="p-8 text-center text-slate-500 border rounded-xl bg-slate-50">
-                Nenhuma tarefa encontrada. Use "Gerar Dados Teste" acima.
+              <div className="p-8 text-center text-muted-foreground border border-border rounded-xl bg-secondary/10">
+                Nenhuma tarefa encontrada.
               </div>
             )}
           </div>
