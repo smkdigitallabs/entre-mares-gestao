@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { createProperty } from "@/app/actions/properties";
@@ -97,7 +97,14 @@ export function PropertyFormDialog() {
                 disabled={loading}
                 className="px-4 py-2 bg-sky-600 text-white rounded-lg text-sm font-medium hover:bg-sky-700 transition-colors disabled:opacity-50 flex items-center gap-2"
               >
-                {loading ? "Salvando..." : "Salvar Propriedade"}
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin" size={16} />
+                    Salvando...
+                  </>
+                ) : (
+                  "Salvar Propriedade"
+                )}
               </button>
             </div>
           </form>

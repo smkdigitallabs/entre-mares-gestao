@@ -7,11 +7,37 @@ import {
   CheckCircle2,
   Baby,
   Instagram,
-  Lightbulb
+  Lightbulb,
+  Megaphone,
+  ArrowRight
 } from "lucide-react";
-import type { ReactNode, SVGProps } from "react";
+import type { ReactNode } from "react";
+import { ViewAllButton } from "@/components/admin/view-all-button";
+import { PlanNowButton } from "@/components/admin/plan-now-button";
+import { getTransactions } from "@/app/actions/finance";
+import { getTasks } from "@/app/actions/operational";
+import { getOccupancyStats } from "@/app/actions/reservations";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const [transactionsRes, tasksRes, occupancyRes] = await Promise.all([
+    getTransactions(),
+    getTasks('today'),
+    getOccupancyStats()
+  ]);
+
+  const transactions = transactionsRes.success ? transactionsRes.data : [];
+  const tasks = tasksRes.success ? tasksRes.data : [];
+  const occupancy = occupancyRes.success ? occupancyRes.data : { totalReservations: 0, occupancyRate: 0 };
+
+  // Calcular ganhos do mês atual
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const currentMonthGains = transactions
+    .filter(t => new Date(t.date) >= startOfMonth && t.type === 'gain')
+    .reduce((acc, t) => acc + Number(t.amount), 0);
+
+  const pendingTasksCount = tasks.filter(t => t.status !== 'completed').length;
+
   return (
     <div className="space-y-8">
       <div>
@@ -23,27 +49,27 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard 
           title="Ganhos do Mês" 
-          value="R$ 12.450,00" 
+          value={`R$ ${currentMonthGains.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`} 
           icon={<TrendingUp className="text-emerald-500" />} 
-          trend="+12% vs mês anterior"
+          trend="Dados Reais"
         />
         <StatCard 
           title="Próximos Check-ins" 
-          value="4" 
+          value={occupancy.totalReservations.toString()} 
           icon={<Calendar className="text-sky-500" />} 
-          trend="Esta semana"
+          trend="Este mês"
         />
         <StatCard 
           title="Taxa de Ocupação" 
-          value="78%" 
+          value={`${occupancy.occupancyRate}%`} 
           icon={<Users className="text-violet-500" />} 
-          trend="+5% vs mês anterior"
+          trend="Estimado"
         />
         <StatCard 
-          title="Pendências" 
-          value="2" 
+          title="Tarefas Hoje" 
+          value={tasks.length.toString()} 
           icon={<AlertCircle className="text-amber-500" />} 
-          trend="Ações requeridas"
+          trend={`${pendingTasksCount} pendentes`}
         />
       </div>
 
@@ -60,49 +86,41 @@ export default function Dashboard() {
                 <Baby size={14} />
                 Bloco Família Ativo
               </span>
-              <button className="text-sm text-sky-600 hover:underline">Ver tudo</button>
+              <ViewAllButton section="tasks" />
             </div>
           </div>
           <div className="bg-white rounded-xl border p-6 space-y-4">
-            <ChallengeItem 
-              title="Vistoria Casa Maré Alta" 
-              time="09:00 - 10:00" 
-              category="Operacional"
-              status="pending"
-            />
-            <ChallengeItem 
-              title="Responder Consultas Airbnb" 
-              time="10:30 - 11:00" 
-              category="Marketing"
-              status="completed"
-            />
-            <ChallengeItem 
-              title="Tempo com a Pequena (Almoço & Soneca)" 
-              time="12:00 - 14:00" 
-              category="Pessoal"
-              status="pending"
-              isPersonal
-            />
-            <ChallengeItem 
-              title="Organizar kits de boas-vindas" 
-              time="14:30 - 15:30" 
-              category="Operacional"
-              status="pending"
-            />
-            <ChallengeItem 
-              title="Brincadeira no Jardim" 
-              time="17:00 - 18:00" 
-              category="Pessoal"
-              status="pending"
-              isPersonal
-            />
+            {tasks.length > 0 ? (
+              tasks.map((task: any) => (
+                <ChallengeItem 
+                  key={task.id}
+                  title={task.title} 
+                  time={new Date(task.dueDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} 
+                  category={task.property?.name || "Geral"}
+                  status={task.status === 'completed' ? 'completed' : 'pending'}
+                />
+              ))
+            ) : (
+              <p className="text-slate-500 text-sm text-center py-4">Nenhuma tarefa para hoje.</p>
+            )}
+            
+            <div className="pt-4 border-t border-dashed">
+              <p className="text-xs font-semibold text-rose-400 uppercase tracking-wider mb-3">Rotina Pessoal (Exemplo)</p>
+              <ChallengeItem 
+                title="Tempo com a Pequena (Almoço & Soneca)" 
+                time="12:00 - 14:00" 
+                category="Pessoal"
+                status="pending"
+                isPersonal
+              />
+            </div>
           </div>
         </div>
 
         {/* Marketing & Insights */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold flex items-center gap-2">
-            <MegaphoneIcon className="text-amber-500" size={20} />
+            <Megaphone className="text-amber-500" size={20} />
             Estratégia do Dia
           </h2>
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
@@ -117,9 +135,7 @@ export default function Dashboard() {
               Mostre os lençóis impecáveis ou o aroma do ambiente. 
               Lembre-se: &quot;A Entre Marés não vende hospedagem, vende tranquilidade.&quot;
             </p>
-            <button className="mt-4 w-full bg-amber-500 text-white py-2 rounded-lg text-sm font-medium hover:bg-amber-600 transition-colors shadow-sm">
-              Planejar Agora
-            </button>
+            <PlanNowButton />
           </div>
 
           <div className="bg-sky-50 border border-sky-100 rounded-xl p-6">
@@ -181,7 +197,9 @@ function ChallengeItem({ title, time, category, status, isPersonal }: ChallengeI
             {title}
           </p>
           <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-xs text-slate-500">{time}</span>
+            <span className="text-xs text-slate-500">
+              {time}
+            </span>
             <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-white border text-slate-400">
               {category}
             </span>
@@ -192,26 +210,4 @@ function ChallengeItem({ title, time, category, status, isPersonal }: ChallengeI
   );
 }
 
-type MegaphoneIconProps = SVGProps<SVGSVGElement> & {
-  size?: number;
-};
 
-function MegaphoneIcon({ size = 24, ...props }: MegaphoneIconProps) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m3 11 18-5v12L3 14v-3z" />
-      <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
-    </svg>
-  );
-}

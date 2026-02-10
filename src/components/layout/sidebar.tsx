@@ -9,11 +9,13 @@ import {
   Megaphone, 
   FileText, 
   Home,
-  Waves
+  Waves,
+  Lightbulb
 } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import packageJson from "../../../package.json";
+import { useState, useEffect } from "react";
 
 const menuItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -22,10 +24,27 @@ const menuItems = [
   { name: "Marketing", href: "/marketing", icon: Megaphone },
   { name: "Documentos", href: "/documentos", icon: FileText },
   { name: "Propriedades", href: "/propriedades", icon: Home },
+  { name: "Melhorias", href: "/melhorias", icon: Lightbulb },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [isOnline, setIsOnline] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const res = await fetch("/api/health");
+        setIsOnline(res.ok);
+      } catch {
+        setIsOnline(false);
+      }
+    };
+    
+    checkHealth();
+    const interval = setInterval(checkHealth, 30000); // Check every 30s
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <aside className="w-64 bg-background/80 backdrop-blur-md border-r border-border flex flex-col h-screen sticky top-0 transition-colors">
@@ -66,15 +85,21 @@ export function Sidebar() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold text-muted-foreground uppercase">Status</p>
             <div className="flex items-center gap-2 mt-1">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-sm text-foreground">Sistema Online</span>
+              <div className={cn(
+                "w-2 h-2 rounded-full",
+                isOnline === null ? "bg-slate-300" : 
+                isOnline ? "bg-green-500 animate-pulse" : "bg-rose-500"
+              )} />
+              <span className="text-sm text-foreground">
+                {isOnline === null ? "Verificando..." : 
+                 isOnline ? "Sistema Online" : "Sistema Offline"}
+              </span>
             </div>
           </div>
           
           <div className="text-center pt-1 border-t border-border/50 mt-2">
-            <span className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">v{packageJson.version}</span>
+            <span className="text-[10px] text-muted-foreground font-mono tracking-wider">v{packageJson.version}</span>
           </div>
         </div>
       </div>

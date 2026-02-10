@@ -1,6 +1,6 @@
 "use client"
 
-import { Instagram, MessageCircle, Trash2 } from "lucide-react"
+import { Instagram, MessageCircle, Trash2, Loader2 } from "lucide-react"
 import { deleteMarketingPost } from "@/app/actions/marketing"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -46,7 +46,7 @@ export function MarketingPostCard({ post }: MarketingPostProps) {
            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
            title="Excluir"
          >
-           <Trash2 size={16} />
+           {isDeleting ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
          </button>
       </div>
 

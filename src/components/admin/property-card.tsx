@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, User, Trash2 } from "lucide-react";
+import { MapPin, User, Trash2, Loader2 } from "lucide-react";
 import { deleteProperty } from "@/app/actions/properties";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -71,7 +71,7 @@ export function PropertyCard({ property }: { property: PropertyProps }) {
             className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full transition-colors"
             title="Excluir propriedade"
           >
-            <Trash2 size={18} />
+            {isDeleting ? <Loader2 className="animate-spin" size={18} /> : <Trash2 size={18} />}
           </button>
         </div>
         

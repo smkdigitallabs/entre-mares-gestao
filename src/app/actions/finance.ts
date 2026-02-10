@@ -4,12 +4,26 @@ import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import { auth } from "@clerk/nextjs/server"
 
-export async function getTransactions() {
+export async function getTransactions(type?: string, search?: string) {
   const { userId } = await auth();
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
+    const where: any = {};
+
+    if (type && type !== 'all') {
+      where.type = type;
+    }
+
+    if (search) {
+      where.OR = [
+        { description: { contains: search, mode: 'insensitive' } },
+        { category: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+    
     const transactions = await prisma.transaction.findMany({
+      where,
       orderBy: { date: 'desc' },
       include: {
         reservation: true
@@ -63,6 +77,42 @@ export async function deleteTransaction(id: string) {
   } catch (error) {
     console.error("Erro ao excluir transação:", error)
     return { success: false, error: "Falha ao excluir transação" }
+  }
+}
+
+export async function exportTransactionsToCSV() {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
+  try {
+    const transactions = await prisma.transaction.findMany({
+      orderBy: { date: 'desc' }
+    });
+
+    // Cabeçalho CSV
+    const csvHeader = 'Data,Descrição,Categoria,Valor,Tipo\n';
+    
+    // Dados CSV
+    const csvData = transactions.map(t => {
+      const date = new Date(t.date).toLocaleDateString('pt-BR');
+      const description = t.description.replace(/,/g, ';'); // Substituir vírgulas para não quebrar CSV
+      const category = t.category.replace(/,/g, ';');
+      const amount = t.amount.toFixed(2);
+      const type = t.type === 'gain' ? 'Ganho' : 'Despesa';
+      
+      return `${date},${description},${category},${amount},${type}`;
+    }).join('\n');
+
+    const csvContent = csvHeader + csvData;
+    
+    return { 
+      success: true, 
+      data: csvContent,
+      filename: `transacoes-entre-mares-${new Date().toISOString().split('T')[0]}.csv`
+    };
+  } catch (error) {
+    console.error("Erro ao exportar transações:", error);
+    return { success: false, error: "Falha ao exportar transações" };
   }
 }
 

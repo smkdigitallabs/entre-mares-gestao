@@ -2,21 +2,23 @@
 import { 
   ArrowUpCircle, 
   ArrowDownCircle, 
-  Plus, 
-  Filter, 
-  Download,
+  Plus,
   Search,
   TrendingUp
 } from "lucide-react";
+import { ExportButton } from "@/components/admin/export-button";
+import { FilterButton } from "@/components/admin/filter-button";
 import { formatCurrency } from "@/lib/utils";
 import { getTransactions, seedTransactions } from "@/app/actions/finance";
 import { TransactionRow } from "@/components/admin/transaction-row";
 import { TransactionFormDialog } from "@/components/admin/transaction-form-dialog";
+import { SubmitButton } from "@/components/admin/submit-button";
+import { SearchBar } from "@/components/admin/search-bar";
 
 export const dynamic = 'force-dynamic';
 
-export default async function FinanceiroPage() {
-  const { data: transactions } = await getTransactions();
+export default async function FinanceiroPage({ searchParams }: { searchParams: { type?: string, search?: string } }) {
+  const { data: transactions } = await getTransactions(searchParams.type, searchParams.search);
 
   // Calcular totais baseados nos dados reais (ou mockados se vazio)
   const totalBalance = transactions?.reduce((acc, t) => {
@@ -41,14 +43,11 @@ export default async function FinanceiroPage() {
             'use server'
             await seedTransactions()
           }}>
-             <button className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+             <SubmitButton className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
                Gerar Dados Teste
-             </button>
+             </SubmitButton>
            </form>
-          <button className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
-            <Download size={18} />
-            Exportar
-          </button>
+          <ExportButton />
           <TransactionFormDialog />
         </div>
       </div>
@@ -81,17 +80,10 @@ export default async function FinanceiroPage() {
       <div className="bg-white rounded-xl border overflow-hidden">
         <div className="p-4 border-b flex flex-col md:flex-row md:items-center gap-4 justify-between bg-slate-50/50">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Buscar transação..." 
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all text-sm"
-            />
+            <SearchBar placeholder="Buscar transação..." />
           </div>
           <div className="flex gap-2">
-            <button className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors">
-              <Filter size={18} />
-            </button>
+            <FilterButton />
           </div>
         </div>
         

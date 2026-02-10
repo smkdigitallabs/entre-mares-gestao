@@ -4,12 +4,25 @@ import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import { auth } from "@clerk/nextjs/server"
 
-export async function getProperties() {
+export async function getProperties(search?: string) {
   const { userId } = await auth();
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
+    let where = {};
+    
+    if (search) {
+      where = {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { address: { contains: search, mode: 'insensitive' } },
+          { ownerName: { contains: search, mode: 'insensitive' } }
+        ]
+      };
+    }
+
     const properties = await prisma.property.findMany({
+      where,
       orderBy: { createdAt: 'desc' }
     })
     return { success: true, data: properties }

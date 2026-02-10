@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckSquare, Clock, MapPin, Trash2, User } from "lucide-react";
+import { CheckSquare, Clock, MapPin, Trash2, User, Loader2 } from "lucide-react";
 import { toggleTaskStatus, deleteTask } from "@/app/actions/operational";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -64,7 +64,7 @@ export function TaskItem({ task }: TaskItemProps) {
         className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-colors ${
         isCompleted ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-200 group-hover:border-sky-500'
       }`}>
-        {isCompleted && <CheckSquare size={14} />}
+        {isToggling ? <Loader2 className="animate-spin" size={14} /> : (isCompleted && <CheckSquare size={14} />)}
       </button>
       
       <div className="flex-1">
@@ -100,7 +100,7 @@ export function TaskItem({ task }: TaskItemProps) {
           className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-all opacity-0 group-hover:opacity-100"
           title="Excluir tarefa"
         >
-          <Trash2 size={16} />
+          {isDeleting ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
         </button>
       </div>
     </div>

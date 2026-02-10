@@ -1,0 +1,1 @@
+{"last_found_secrets": [{"match": "414e4a327ce724820b6f94a56159c299a1f8322580372d273503165bc37f74d1", "name": "Google OAuth2 Keys - .env"}, {"match": "01f1d696544ae3a246fda79380bd25e968cebf6781631b3e4db6a35b27693530", "name": "PostgreSQL URI - .env"}, {"match": "8af1e4cfb352682f3d6548d135adc2e748a27c2bcdc00ec05b46f77aa8d0c3f7", "name": "PostgreSQL URI - .env"}]}

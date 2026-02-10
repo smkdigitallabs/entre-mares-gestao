@@ -1,4 +1,5 @@
 import { FileText, Download, ExternalLink, Search } from "lucide-react";
+import { NewReviewButton } from "@/components/admin/new-review-button";
 
 const documents = [
   {
@@ -106,9 +107,7 @@ export default function DocumentosPage() {
               As diretrizes estratégicas devem ser revisadas a cada 6 meses para garantir que o negócio continue evoluindo conforme o planejado.
             </p>
           </div>
-          <button className="md:ml-auto px-6 py-3 bg-sky-600 text-white rounded-xl font-bold hover:bg-sky-700 transition-colors shadow-lg shadow-sky-600/20 whitespace-nowrap">
-            Nova Revisão
-          </button>
+          <NewReviewButton />
         </div>
       </div>
     </div>

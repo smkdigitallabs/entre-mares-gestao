@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 import { deleteTransaction } from "@/app/actions/finance";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -78,7 +78,7 @@ export function TransactionRow({ transaction }: TransactionRowProps) {
             className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-all opacity-0 group-hover:opacity-100"
             title="Excluir transação"
           >
-            <Trash2 size={16} />
+            {isDeleting ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
           </button>
         </div>
       </td>

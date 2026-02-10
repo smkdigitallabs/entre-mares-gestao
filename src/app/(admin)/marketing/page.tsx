@@ -7,6 +7,7 @@ import {
 import { getMarketingPosts, seedMarketingPosts } from "@/app/actions/marketing";
 import { MarketingPostCard } from "@/components/admin/marketing-post-card";
 import { MarketingFormDialog } from "@/components/admin/marketing-form-dialog";
+import { ViewFullCalendarButton } from "@/components/admin/view-full-calendar-button";
 
 export const dynamic = 'force-dynamic';
 
@@ -105,9 +106,7 @@ export default async function MarketingPage() {
                 </div>
               </div>
             </div>
-            <button className="w-full mt-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm font-medium transition-colors border border-white/10">
-              Ver Calendário Completo
-            </button>
+            <ViewFullCalendarButton />
           </div>
 
           <div className="bg-white rounded-xl border p-6">

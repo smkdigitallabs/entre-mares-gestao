@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { Plus, X } from "lucide-react";
+import { Plus, X, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { createTask } from "@/app/actions/operational";
@@ -155,7 +155,14 @@ export function TaskFormDialog() {
                 disabled={loading}
                 className="px-4 py-2 bg-sky-600 text-white rounded-lg text-sm font-medium hover:bg-sky-700 transition-colors disabled:opacity-50 flex items-center gap-2"
               >
-                {loading ? "Salvando..." : "Salvar Tarefa"}
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin" size={16} />
+                    Salvando...
+                  </>
+                ) : (
+                  "Salvar Tarefa"
+                )}
               </button>
             </div>
           </form>

@@ -1,18 +1,22 @@
 
-import { 
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-  Baby
-} from "lucide-react";
+import { Plus } from "lucide-react";
+import { PersonalBlockButton } from "@/components/admin/personal-block-button";
+import { Calendar } from "@/components/admin/calendar";
+import { DateFilterButtons } from "@/components/admin/date-filter-buttons";
 import { getTasks, seedTasks } from "@/app/actions/operational";
 import { TaskItem } from "@/components/admin/task-item";
-import { TaskFormDialog } from "@/components/admin/task-form-dialog";
+import dynamic from 'next/dynamic';
+import { SubmitButton } from "@/components/admin/submit-button";
+
+const TaskFormDialog = dynamic(() => import('@/components/admin/task-form-dialog').then(mod => mod.TaskFormDialog), {
+  ssr: false,
+  loading: () => <div className="w-[125px] h-[40px] bg-slate-200 rounded-lg animate-pulse" />
+});
 
 export const dynamic = 'force-dynamic';
 
-export default async function OperacionalPage() {
-  const { data: tasks } = await getTasks();
+export default async function OperacionalPage({ searchParams }: { searchParams: { period?: string } }) {
+  const { data: tasks } = await getTasks(searchParams.period);
 
   return (
     <div className="space-y-8">
@@ -26,14 +30,11 @@ export default async function OperacionalPage() {
             'use server'
             await seedTasks()
           }}>
-             <button className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+             <SubmitButton className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
                Gerar Dados Teste
-             </button>
+             </SubmitButton>
            </form>
-          <button className="flex items-center gap-2 px-4 py-2 bg-rose-100 text-rose-700 rounded-lg text-sm font-medium hover:bg-rose-200 transition-colors">
-            <Baby size={18} />
-            Bloco Pessoal
-          </button>
+          <PersonalBlockButton />
           <TaskFormDialog />
         </div>
       </div>
@@ -41,32 +42,7 @@ export default async function OperacionalPage() {
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
         {/* Mini Calendário / Seletor de Data */}
         <div className="xl:col-span-1 space-y-6">
-          <div className="bg-white rounded-xl border p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="font-bold text-slate-900">Janeiro 2026</h2>
-              <div className="flex gap-1">
-                <button className="p-1 hover:bg-slate-100 rounded"><ChevronLeft size={16} /></button>
-                <button className="p-1 hover:bg-slate-100 rounded"><ChevronRight size={16} /></button>
-              </div>
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-xs mb-2 text-slate-400 font-bold">
-              <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-center">
-              {[...Array(31)].map((_, i) => (
-                <button 
-                  key={i} 
-                  className={`py-2 rounded-lg text-sm transition-all ${
-                    i + 1 === 29 
-                      ? 'bg-sky-500 text-white font-bold' 
-                      : 'hover:bg-slate-50 text-slate-600'
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-          </div>
+          <Calendar />
 
           <div className="bg-sky-50 rounded-xl border border-sky-100 p-6">
             <h3 className="font-bold text-sky-900 text-sm mb-3">Lembrete do Manual</h3>
@@ -80,11 +56,7 @@ export default async function OperacionalPage() {
 
         {/* Lista de Tarefas do Dia */}
         <div className="xl:col-span-3 space-y-4">
-          <div className="flex items-center gap-4 mb-2">
-            <button className="px-4 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Hoje</button>
-            <button className="px-4 py-1.5 rounded-full bg-white border text-slate-500 text-xs font-bold hover:bg-slate-50">Amanhã</button>
-            <button className="px-4 py-1.5 rounded-full bg-white border text-slate-500 text-xs font-bold hover:bg-slate-50">Esta Semana</button>
-          </div>
+          <DateFilterButtons />
 
           <div className="space-y-3">
             {tasks?.map((task) => (
