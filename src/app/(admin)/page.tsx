@@ -25,9 +25,9 @@ export default async function Dashboard() {
     getOccupancyStats()
   ]);
 
-  const transactions = transactionsRes.success ? transactionsRes.data : [];
-  const tasks = tasksRes.success ? tasksRes.data : [];
-  const occupancy = occupancyRes.success ? occupancyRes.data : { totalReservations: 0, occupancyRate: 0 };
+  const transactions = (transactionsRes.success && transactionsRes.data) ? transactionsRes.data : [];
+  const tasks = (tasksRes.success && tasksRes.data) ? tasksRes.data : [];
+  const occupancy = (occupancyRes.success && occupancyRes.data) ? occupancyRes.data : { totalReservations: 0, occupancyRate: 0 };
 
   // Calcular ganhos do mês atual
   const now = new Date();
