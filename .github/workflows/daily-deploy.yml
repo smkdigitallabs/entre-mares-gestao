@@ -1,0 +1,22 @@
+name: Daily Deploy
+
+on:
+  schedule:
+    # Runs at 09:00 UTC (06:00 Brasília time) every day
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+        
+      - name: Deploy to Vercel (Production)
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: team_VYL2j4Rk2um067LchZkp4PhZ
+          VERCEL_PROJECT_ID: prj_34GKUqx8wqO09xBAZQTbVolqWJ6Y
