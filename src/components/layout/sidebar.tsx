@@ -38,6 +38,8 @@ export function Sidebar() {
     // Fechar ao mudar de rota em mobile
     setIsOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
     const checkHealth = async () => {
       try {
         const res = await fetch("/api/health");
