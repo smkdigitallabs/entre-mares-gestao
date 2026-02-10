@@ -8,8 +8,6 @@ import { TaskItem } from "@/components/admin/task-item";
 import { TaskFormDialog } from "@/components/admin/task-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
 
-export const dynamic = 'force-dynamic';
-
 export default async function OperacionalPage({ searchParams }: { searchParams: { period?: string } }) {
   const { data: tasks } = await getTasks(searchParams.period);
 

@@ -15,8 +15,6 @@ import { TransactionFormDialog } from "@/components/admin/transaction-form-dialo
 import { SubmitButton } from "@/components/admin/submit-button";
 import { SearchBar } from "@/components/admin/search-bar";
 
-export const dynamic = 'force-dynamic';
-
 export default async function FinanceiroPage({ searchParams }: { searchParams: { type?: string, search?: string } }) {
   const { data: transactions } = await getTransactions(searchParams.type, searchParams.search);
 

@@ -35,3 +35,6 @@ IA_SYNC/
 next-env.d.ts
 
 .vercel
+
+# Added by ggshield
+.cache_ggshield
