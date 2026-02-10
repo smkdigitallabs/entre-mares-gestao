@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { CheckCircle2, Lightbulb } from "lucide-react";
 import { ImprovementForm } from "@/components/admin/improvement-form";
 import { SubmitButton } from "@/components/admin/submit-button";
+import { PageTutorial } from "@/components/admin/page-tutorial";
 
 const DEV_EMAIL = (process.env.DEV_EMAIL || "smkdigitallabs@gmail.com").toLowerCase();
 
@@ -18,9 +19,12 @@ export default async function MelhoriasPage() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Melhorias</h1>
-          <p className="text-muted-foreground mt-1 max-w-xl">
-            Sugestões de melhorias, correções de falhas, seu contato principal com o desenvolvedor
-          </p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-muted-foreground max-w-xl">
+              Sugestões de melhorias, correções de falhas, seu contato principal com o desenvolvedor
+            </p>
+            <PageTutorial />
+          </div>
         </div>
       </div>
 

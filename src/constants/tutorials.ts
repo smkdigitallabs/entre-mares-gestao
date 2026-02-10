@@ -59,5 +59,45 @@ export const TUTORIALS: Record<string, PageTutorialData> = {
         targetId: "calendar-widget"
       }
     ]
+  },
+  "/marketing": {
+    title: "Marketing & Divulgação",
+    steps: [
+      {
+        title: "Presença Digital",
+        description: "Aqui você gerencia como sua marca é vista no Instagram e outras redes sociais.",
+        targetId: "marketing-overview"
+      }
+    ]
+  },
+  "/documentos": {
+    title: "Central de Documentos",
+    steps: [
+      {
+        title: "Manuais e Guias",
+        description: "Acesse todos os documentos oficiais, manuais operacionais e guias do hóspede.",
+        targetId: "document-list"
+      }
+    ]
+  },
+  "/propriedades": {
+    title: "Gestão de Propriedades",
+    steps: [
+      {
+        title: "Seus Imóveis",
+        description: "Visualize e gerencie todos os imóveis cadastrados sob sua administração.",
+        targetId: "property-grid"
+      }
+    ]
+  },
+  "/melhorias": {
+    title: "Evolução do Sistema",
+    steps: [
+      {
+        title: "Sugestões e Falhas",
+        description: "Envie suas ideias de melhoria ou reporte falhas diretamente para o desenvolvedor.",
+        targetId: "improvement-form"
+      }
+    ]
   }
 };

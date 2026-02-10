@@ -29,7 +29,7 @@ export function ImprovementForm() {
   };
 
   return (
-    <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+    <div id="improvement-form" className="bg-card border border-border rounded-xl p-5 space-y-4">
       <div>
         <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
           <Lightbulb size={18} />

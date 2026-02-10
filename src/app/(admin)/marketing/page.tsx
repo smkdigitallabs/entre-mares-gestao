@@ -8,6 +8,7 @@ import { getMarketingPosts, seedMarketingPosts } from "@/app/actions/marketing";
 import { MarketingPostCard } from "@/components/admin/marketing-post-card";
 import { MarketingFormDialog } from "@/components/admin/marketing-form-dialog";
 import { ViewFullCalendarButton } from "@/components/admin/view-full-calendar-button";
+import { PageTutorial } from "@/components/admin/page-tutorial";
 
 export const dynamic = 'force-dynamic';
 
@@ -28,12 +29,15 @@ export default async function MarketingPage() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Marketing & Divulgação</h1>
-          <p className="text-slate-500 mt-1">Planejamento de conteúdo e presença digital do Entre Marés.</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-slate-500">Planejamento de conteúdo e presença digital do Entre Marés.</p>
+            <PageTutorial />
+          </div>
         </div>
         <MarketingFormDialog />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div id="marketing-overview" className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Diretrizes de Comunicação */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-xl border p-6">

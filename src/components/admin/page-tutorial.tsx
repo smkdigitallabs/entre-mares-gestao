@@ -71,10 +71,10 @@ export function PageTutorial() {
       <Dialog.Trigger asChild>
         <button 
           className="flex items-center gap-2 px-3 py-1.5 text-sky-700 hover:text-sky-900 bg-sky-50/50 hover:bg-sky-100/80 rounded-full transition-all duration-300 text-xs font-semibold border border-sky-200/50 hover:border-sky-300 group shadow-sm hover:shadow-md active:scale-95"
-          title="Dicas de viagem (como funciona esta página)"
+          title="Dúvidas (como funciona esta página)"
         >
-          <Palmtree size={14} className="group-hover:rotate-12 transition-transform text-orange-400" />
-          <span>Dicas da Praia</span>
+          <HelpCircle size={14} className="group-hover:rotate-12 transition-transform text-sky-500" />
+          <span>Dúvidas</span>
         </button>
       </Dialog.Trigger>
       

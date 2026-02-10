@@ -1,5 +1,6 @@
 import { FileText, Download, ExternalLink, Search } from "lucide-react";
 import { NewReviewButton } from "@/components/admin/new-review-button";
+import { PageTutorial } from "@/components/admin/page-tutorial";
 
 const documents = [
   {
@@ -46,7 +47,10 @@ export default function DocumentosPage() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Biblioteca de Documentos</h1>
-          <p className="text-slate-500 mt-1">Consulte as diretrizes e manuais oficiais do Entre Marés.</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-slate-500">Consulte as diretrizes e manuais oficiais do Entre Marés.</p>
+            <PageTutorial />
+          </div>
         </div>
         <div className="relative w-64">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -58,7 +62,7 @@ export default function DocumentosPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div id="document-list" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {documents.map((doc) => (
           <div key={doc.file} className="bg-white rounded-xl border p-6 flex flex-col h-full group hover:border-sky-200 hover:shadow-sm transition-all">
             <div className="flex justify-between items-start mb-4">

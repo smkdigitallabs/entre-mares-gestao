@@ -4,6 +4,7 @@ import { PropertyCard } from "@/components/admin/property-card";
 import { PropertyFormDialog } from "@/components/admin/property-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { SearchBar } from "@/components/admin/search-bar";
+import { PageTutorial } from "@/components/admin/page-tutorial";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,10 @@ export default async function PropriedadesPage({
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Propriedades</h1>
-          <p className="text-muted-foreground mt-1">Gestão dos imóveis sob administração do Entre Marés.</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-muted-foreground mt-1">Gestão dos imóveis sob administração do Entre Marés.</p>
+            <PageTutorial />
+          </div>
         </div>
         <div className="flex gap-2">
           <form action={async () => {
@@ -44,7 +48,7 @@ export default async function PropriedadesPage({
         </select>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div id="property-grid" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {properties?.map((prop) => (
           <PropertyCard key={prop.id} property={prop} />
         ))}
