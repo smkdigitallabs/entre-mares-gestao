@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import { auth } from "@clerk/nextjs/server"
+import { TaskPriority } from "@prisma/client"
 
 export async function getTasks(period?: string) {
   const { userId } = await auth();
@@ -58,7 +59,7 @@ export async function getTasks(period?: string) {
 export async function createTask(data: {
   title: string;
   dueDate: Date;
-  priority: string;
+  priority: TaskPriority;
   description?: string;
 }) {
   const { userId } = await auth();
