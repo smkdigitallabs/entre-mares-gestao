@@ -14,6 +14,7 @@ import { TransactionRow } from "@/components/admin/transaction-row";
 import { TransactionFormDialog } from "@/components/admin/transaction-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { SearchBar } from "@/components/admin/search-bar";
+import { PageTutorial } from "@/components/admin/page-tutorial";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,10 @@ export default async function FinanceiroPage({ searchParams }: { searchParams: {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Financeiro</h1>
-          <p className="text-slate-500 mt-1">Mapeamento de ganhos e despesas do Entre Marés.</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-slate-500">Mapeamento de ganhos e despesas do Entre Marés.</p>
+            <PageTutorial />
+          </div>
         </div>
         <div className="flex gap-3">
           <form action={async () => {
@@ -77,8 +81,8 @@ export default async function FinanceiroPage({ searchParams }: { searchParams: {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border overflow-hidden">
-        <div className="p-4 border-b flex flex-col md:flex-row md:items-center gap-4 justify-between bg-slate-50/50">
+      <div id="finance-filters" className="bg-white rounded-xl border overflow-hidden">
+        <div id="finance-list" className="p-4 border-b flex flex-col md:flex-row md:items-center gap-4 justify-between bg-slate-50/50">
           <div className="relative flex-1 max-w-md">
             <SearchBar placeholder="Buscar transação..." />
           </div>

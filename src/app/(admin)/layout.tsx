@@ -10,12 +10,7 @@ export default function AdminLayout({
     <div className="flex min-h-screen">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
-        {/* Top bar for page-specific tools */}
-        <div className="sticky top-0 z-30 flex justify-end items-center px-8 py-4 bg-background/50 backdrop-blur-sm">
-          <PageTutorial />
-        </div>
-        
-        <div className="p-8 pt-0">
+        <div className="p-8">
           {children}
         </div>
       </main>

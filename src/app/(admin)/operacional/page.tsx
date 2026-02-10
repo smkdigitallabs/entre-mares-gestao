@@ -7,6 +7,7 @@ import { getTasks, seedTasks } from "@/app/actions/operational";
 import { TaskItem } from "@/components/admin/task-item";
 import { TaskFormDialog } from "@/components/admin/task-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
+import { PageTutorial } from "@/components/admin/page-tutorial";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,10 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Operacional & Tempo</h1>
-          <p className="text-slate-500 mt-1">Gestão de rotina, tarefas e tempo pessoal.</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-slate-500">Gestão de rotina, tarefas e tempo pessoal.</p>
+            <PageTutorial />
+          </div>
         </div>
         <div className="flex gap-3">
           <form action={async () => {
@@ -36,7 +40,7 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
 
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
         {/* Mini Calendário / Seletor de Data */}
-        <div className="xl:col-span-1 space-y-6">
+        <div id="calendar-widget" className="xl:col-span-1 space-y-6">
           <Calendar />
 
           <div className="bg-sky-50 rounded-xl border border-sky-100 p-6">
@@ -50,7 +54,7 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
         </div>
 
         {/* Lista de Tarefas do Dia */}
-        <div className="xl:col-span-3 space-y-4">
+        <div id="task-list" className="xl:col-span-3 space-y-4">
           <DateFilterButtons />
 
           <div className="space-y-3">

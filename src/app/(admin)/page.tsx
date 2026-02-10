@@ -17,6 +17,7 @@ import { PlanNowButton } from "@/components/admin/plan-now-button";
 import { getTransactions } from "@/app/actions/finance";
 import { getTasks } from "@/app/actions/operational";
 import { getOccupancyStats } from "@/app/actions/reservations";
+import { PageTutorial } from "@/components/admin/page-tutorial";
 
 export default async function Dashboard() {
   const [transactionsRes, tasksRes, occupancyRes] = await Promise.all([
@@ -40,14 +41,20 @@ export default async function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Bom dia! 👋</h1>
-        <p className="text-slate-500 mt-1">Aqui está o que está acontecendo no Entre Marés hoje.</p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Bom dia! 👋</h1>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-slate-500">Aqui está o que está acontecendo no Entre Marés hoje.</p>
+            <PageTutorial />
+          </div>
+        </div>
       </div>
 
       {/* Resumo Financeiro e Ocupação */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div id="dashboard-stats" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard 
+          id="stat-card-ganhos"
           title="Ganhos do Mês" 
           value={`R$ ${currentMonthGains.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`} 
           icon={<TrendingUp className="text-emerald-500" />} 
@@ -73,7 +80,7 @@ export default async function Dashboard() {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div id="next-reservations" className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Desafios Diários (Time Management focus) */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
@@ -158,6 +165,7 @@ type StatCardProps = {
   value: string;
   icon: ReactNode;
   trend: string;
+  id?: string;
 };
 
 type ChallengeItemProps = {
@@ -168,9 +176,9 @@ type ChallengeItemProps = {
   isPersonal?: boolean;
 };
 
-function StatCard({ title, value, icon, trend }: StatCardProps) {
+function StatCard({ title, value, icon, trend, id }: StatCardProps) {
   return (
-    <div className="bg-white p-6 rounded-xl border">
+    <div id={id} className="bg-white p-6 rounded-xl border shadow-sm space-y-2">
       <div className="flex justify-between items-start">
         <div className="p-2 bg-slate-50 rounded-lg">{icon}</div>
         <span className="text-xs font-medium text-slate-400">{trend}</span>
