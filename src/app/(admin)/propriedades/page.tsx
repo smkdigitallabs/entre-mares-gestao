@@ -5,6 +5,8 @@ import { PropertyFormDialog } from "@/components/admin/property-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { SearchBar } from "@/components/admin/search-bar";
 
+export const dynamic = "force-dynamic";
+
 export default async function PropriedadesPage({
   searchParams,
 }: {
