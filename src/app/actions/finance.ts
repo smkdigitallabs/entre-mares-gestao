@@ -95,8 +95,8 @@ export async function exportTransactionsToCSV() {
     // Dados CSV
     const csvData = transactions.map(t => {
       const date = new Date(t.date).toLocaleDateString('pt-BR');
-      const description = t.description.replace(/,/g, ';'); // Substituir vírgulas para não quebrar CSV
-      const category = t.category.replace(/,/g, ';');
+      const description = (t.description || '').replace(/,/g, ';'); // Substituir vírgulas para não quebrar CSV
+      const category = (t.category || '').replace(/,/g, ';');
       const amount = t.amount.toFixed(2);
       const type = t.type === 'gain' ? 'Ganho' : 'Despesa';
       
