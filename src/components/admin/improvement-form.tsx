@@ -78,7 +78,7 @@ export function ImprovementForm() {
               Enviando...
             </>
           ) : (
-            "Enviar sugestão"
+            "Enviar sugestão/melhoria"
           )}
         </button>
       </form>

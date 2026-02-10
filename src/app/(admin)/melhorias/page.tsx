@@ -19,8 +19,7 @@ export default async function MelhoriasPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Melhorias</h1>
           <p className="text-muted-foreground mt-1 max-w-xl">
-            Sugestões de evolução da aplicação Entre Marés. O cliente cadastra ideias, e
-            o desenvolvedor marca como concluídas com data e versão.
+            Sugestões de melhoria, correções de falhas, seu contato principal com o desenvolvedor
           </p>
         </div>
       </div>
@@ -129,22 +128,6 @@ export default async function MelhoriasPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="bg-card border border-border rounded-xl p-4 flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-              <Lightbulb size={20} />
-            </div>
-            <div className="space-y-1">
-              <h2 className="font-semibold text-sm text-foreground">
-                Como funciona a sessão de melhorias
-              </h2>
-              <p className="text-xs text-muted-foreground">
-                O cliente sugere melhorias livremente. Apenas o e-mail
-                smkdigitallabs@gmail.com pode marcar uma melhoria como concluída.
-                Ao concluir, registramos a data e a versão da aplicação.
-              </p>
-            </div>
-          </div>
-
           <ImprovementForm />
         </div>
       </div>
