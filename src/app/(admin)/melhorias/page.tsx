@@ -19,7 +19,7 @@ export default async function MelhoriasPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Melhorias</h1>
           <p className="text-muted-foreground mt-1 max-w-xl">
-            Sugestões de melhoria, correções de falhas, seu contato principal com o desenvolvedor
+            Sugestões de melhorias, correções de falhas, seu contato principal com o desenvolvedor
           </p>
         </div>
       </div>
