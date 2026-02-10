@@ -5,13 +5,8 @@ import { Calendar } from "@/components/admin/calendar";
 import { DateFilterButtons } from "@/components/admin/date-filter-buttons";
 import { getTasks, seedTasks } from "@/app/actions/operational";
 import { TaskItem } from "@/components/admin/task-item";
-import dynamic from 'next/dynamic';
+import { TaskFormDialog } from "@/components/admin/task-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
-
-const TaskFormDialog = dynamic(() => import('@/components/admin/task-form-dialog').then(mod => mod.TaskFormDialog), {
-  ssr: false,
-  loading: () => <div className="w-[125px] h-[40px] bg-slate-200 rounded-lg animate-pulse" />
-});
 
 export const dynamic = 'force-dynamic';
 
