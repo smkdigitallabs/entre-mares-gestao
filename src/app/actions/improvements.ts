@@ -61,22 +61,22 @@ export async function createImprovement(formData: FormData) {
   }
 }
 
-export async function completeImprovement(formData: FormData) {
+export async function completeImprovement(formData: FormData): Promise<void> {
   const { userId } = await auth();
-  if (!userId) return { error: "Não autorizado" };
+  if (!userId) throw new Error("Não autorizado");
 
   const user = await currentUser();
   const email = user?.primaryEmailAddress?.emailAddress?.toLowerCase() ?? "";
 
   if (email !== DEV_EMAIL) {
-    return { error: "Apenas o desenvolvedor pode concluir melhorias" };
+    throw new Error("Apenas o desenvolvedor pode concluir melhorias");
   }
 
   const rawId = formData.get("id");
   const id = typeof rawId === "string" ? rawId : "";
 
   if (!id) {
-    return { error: "ID da melhoria inválido" };
+    throw new Error("ID da melhoria inválido");
   }
 
   try {
@@ -91,9 +91,8 @@ export async function completeImprovement(formData: FormData) {
     });
 
     revalidatePath("/melhorias");
-    return { success: true };
   } catch (error) {
     console.error("Erro ao concluir melhoria:", error);
-    return { error: "Falha ao concluir melhoria" };
+    throw new Error("Falha ao concluir melhoria");
   }
 }
