@@ -5,6 +5,7 @@ import { Plus, X, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { createTask } from "@/app/actions/operational";
+import { TaskPriority } from "@prisma/client";
 
 export function TaskFormDialog() {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,7 @@ export function TaskFormDialog() {
 
     const data = {
       title: formData.get("title") as string,
-      priority: formData.get("priority") as string,
+      priority: formData.get("priority") as TaskPriority,
       description: formData.get("description") as string,
       dueDate: dueDate,
     };
