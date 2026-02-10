@@ -10,6 +10,7 @@ export async function getMarketingPosts() {
 
   try {
     const posts = await prisma.marketingPost.findMany({
+      where: { deletedAt: null },
       orderBy: { createdAt: 'desc' }
     })
     return { data: posts }
@@ -48,8 +49,10 @@ export async function deleteMarketingPost(id: string) {
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
-    await prisma.marketingPost.delete({
-      where: { id }
+    // Soft Delete
+    await prisma.marketingPost.update({
+      where: { id },
+      data: { deletedAt: new Date() }
     })
     revalidatePath('/marketing')
     return { success: true }

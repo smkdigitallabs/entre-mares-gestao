@@ -9,7 +9,9 @@ export async function getTransactions(type?: string, search?: string) {
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
-    const where: any = {};
+    const where: any = {
+      deletedAt: null // Apenas itens não excluídos (Soft Delete)
+    };
 
     if (type && type !== 'all') {
       where.type = type;
@@ -69,8 +71,10 @@ export async function deleteTransaction(id: string) {
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
-    await prisma.transaction.delete({
-      where: { id }
+    // Soft Delete em vez de delete físico
+    await prisma.transaction.update({
+      where: { id },
+      data: { deletedAt: new Date() }
     })
     revalidatePath('/financeiro')
     return { success: true }
@@ -86,6 +90,7 @@ export async function exportTransactionsToCSV() {
 
   try {
     const transactions = await prisma.transaction.findMany({
+      where: { deletedAt: null },
       orderBy: { date: 'desc' }
     });
 

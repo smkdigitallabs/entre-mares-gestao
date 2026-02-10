@@ -17,7 +17,9 @@ export async function getTasks(period?: string) {
     const weekEnd = new Date(today);
     weekEnd.setDate(weekEnd.getDate() + 7);
 
-    let where = {};
+    let where: any = {
+      deletedAt: null // Soft Delete
+    };
     
     if (period === 'today') {
       where = {
@@ -122,8 +124,10 @@ export async function deleteTask(id: string) {
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
-    await prisma.task.delete({
-      where: { id }
+    // Soft Delete
+    await prisma.task.update({
+      where: { id },
+      data: { deletedAt: new Date() }
     })
     revalidatePath('/operacional')
     return { success: true }

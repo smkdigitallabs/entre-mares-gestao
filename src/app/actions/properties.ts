@@ -9,7 +9,9 @@ export async function getProperties(search?: string) {
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
-    let where = {};
+    let where: any = {
+      deletedAt: null // Soft Delete
+    };
     
     if (search) {
       where = {
@@ -57,8 +59,10 @@ export async function deleteProperty(id: string) {
   if (!userId) return { success: false, error: "Não autorizado" };
 
   try {
-    await prisma.property.delete({
-      where: { id }
+    // Soft Delete
+    await prisma.property.update({
+      where: { id },
+      data: { deletedAt: new Date() }
     })
     revalidatePath('/propriedades')
     return { success: true }

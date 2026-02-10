@@ -13,6 +13,7 @@ export async function getImprovements() {
 
   try {
     const improvements = await prisma.improvement.findMany({
+      where: { deletedAt: null },
       orderBy: { createdAt: "desc" },
     });
     return { data: improvements };

@@ -9,6 +9,7 @@ export async function getReservations() {
 
   try {
     const reservations = await prisma.reservation.findMany({
+      where: { deletedAt: null },
       orderBy: { checkIn: 'asc' },
       include: {
         property: true
@@ -32,6 +33,7 @@ export async function getOccupancyStats() {
 
     const totalReservations = await prisma.reservation.count({
       where: {
+        deletedAt: null,
         OR: [
           { checkIn: { gte: startOfMonth, lte: endOfMonth } },
           { checkOut: { gte: startOfMonth, lte: endOfMonth } }
@@ -39,7 +41,9 @@ export async function getOccupancyStats() {
       }
     });
 
-    const totalProperties = await prisma.property.count();
+    const totalProperties = await prisma.property.count({
+      where: { deletedAt: null }
+    });
     
     // Simplificação: Taxa baseada em número de propriedades vs reservas no mês
     // Em um cenário real, calcularíamos noites ocupadas / noites totais

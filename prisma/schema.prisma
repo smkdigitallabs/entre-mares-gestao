@@ -17,6 +17,7 @@ model Property {
   tasks       Task[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?     // Soft Delete
 }
 
 model Reservation {
@@ -32,6 +33,7 @@ model Reservation {
   transactions  Transaction[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime? // Soft Delete
 }
 
 model Transaction {
@@ -45,6 +47,7 @@ model Transaction {
   reservation   Reservation? @relation(fields: [reservationId], references: [id])
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?    // Soft Delete
 }
 
 model Task {
@@ -58,6 +61,7 @@ model Task {
   property    Property? @relation(fields: [propertyId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? // Soft Delete
 }
 
 model MarketingPost {
@@ -70,6 +74,7 @@ model MarketingPost {
   status        String    @default("draft") // draft, scheduled, published
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime? // Soft Delete
 }
 
 model Improvement {
@@ -84,6 +89,7 @@ model Improvement {
   completedVersion String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime? // Soft Delete
 }
 
 enum TaskStatus {
