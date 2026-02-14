@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import { PersonalBlockButton } from "@/components/admin/personal-block-button";
 import { Calendar } from "@/components/admin/calendar";
 import { DateFilterButtons } from "@/components/admin/date-filter-buttons";
-import { getTasks, seedTasks } from "@/app/actions/operational";
+import { getTasks } from "@/app/actions/operational";
 import { TaskItem } from "@/components/admin/task-item";
 import { TaskFormDialog } from "@/components/admin/task-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
@@ -25,14 +25,6 @@ export default async function OperacionalPage({ searchParams }: { searchParams: 
           </div>
         </div>
         <div className="flex gap-3">
-          <form action={async () => {
-            'use server'
-            await seedTasks()
-          }}>
-             <SubmitButton className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors border border-border">
-               Gerar Dados Teste
-             </SubmitButton>
-           </form>
           <PersonalBlockButton />
           <TaskFormDialog />
         </div>

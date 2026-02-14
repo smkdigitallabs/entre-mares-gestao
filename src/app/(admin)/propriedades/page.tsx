@@ -1,5 +1,5 @@
 import { Plus, Search } from "lucide-react";
-import { getProperties, seedProperties } from "@/app/actions/properties";
+import { getProperties } from "@/app/actions/properties";
 import { PropertyCard } from "@/components/admin/property-card";
 import { PropertyFormDialog } from "@/components/admin/property-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
@@ -26,14 +26,6 @@ export default async function PropriedadesPage({
           </div>
         </div>
         <div className="flex gap-2">
-          <form action={async () => {
-            'use server'
-            await seedProperties()
-          }}>
-             <SubmitButton className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors border border-border">
-               Gerar Dados Teste
-             </SubmitButton>
-           </form>
           <PropertyFormDialog />
         </div>
       </div>
@@ -60,7 +52,7 @@ export default async function PropriedadesPage({
              </div>
              <h3 className="text-lg font-medium text-foreground">Nenhuma propriedade encontrada</h3>
              <p className="text-muted-foreground mt-1 max-w-sm">
-               Você ainda não cadastrou nenhuma propriedade. Use o botão acima para gerar dados de teste ou cadastre uma nova.
+               Você ainda não cadastrou nenhuma propriedade. Use o botão acima para cadastrar uma nova.
              </p>
            </div>
         )}

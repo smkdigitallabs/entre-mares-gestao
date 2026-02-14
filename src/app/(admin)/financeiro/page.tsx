@@ -9,7 +9,7 @@ import {
 import { ExportButton } from "@/components/admin/export-button";
 import { FilterButton } from "@/components/admin/filter-button";
 import { formatCurrency } from "@/lib/utils";
-import { getTransactions, seedTransactions } from "@/app/actions/finance";
+import { getTransactions } from "@/app/actions/finance";
 import { TransactionRow } from "@/components/admin/transaction-row";
 import { TransactionFormDialog } from "@/components/admin/transaction-form-dialog";
 import { SubmitButton } from "@/components/admin/submit-button";
@@ -41,14 +41,6 @@ export default async function FinanceiroPage({ searchParams }: { searchParams: {
           </div>
         </div>
         <div className="flex gap-3">
-          <form action={async () => {
-            'use server'
-            await seedTransactions()
-          }}>
-             <SubmitButton className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors border border-border">
-               Gerar Dados Teste
-             </SubmitButton>
-           </form>
           <ExportButton />
           <TransactionFormDialog />
         </div>

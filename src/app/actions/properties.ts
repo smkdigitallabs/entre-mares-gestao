@@ -115,35 +115,3 @@ export async function deleteProperty(id: string) {
     return { success: false, error: "Falha ao excluir propriedade" }
   }
 }
-
-export async function seedProperties() {
-  const { userId } = await auth();
-  if (!userId) return { success: false, error: "Não autorizado" };
-
-  try {
-    const count = await prisma.property.count();
-    if (count > 0) return { success: false, message: "Banco já possui dados" };
-    
-    await prisma.property.createMany({
-      data: [
-        {
-          name: "Casa Maré Alta",
-          address: "Praia da Enseada, São Francisco do Sul",
-        },
-        {
-          name: "Loft Central",
-          address: "Centro Histórico, São Francisco do Sul",
-        },
-        {
-          name: "Refúgio do Pescador",
-          address: "Praia do Forte, São Francisco do Sul",
-        }
-      ]
-    })
-    revalidatePath('/propriedades')
-    return { success: true, message: "Dados de exemplo criados" }
-  } catch (error) {
-    console.error("Erro ao popular banco:", error)
-    return { success: false, error: "Falha ao popular banco" }
-  }
-}

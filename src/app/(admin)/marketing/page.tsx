@@ -4,7 +4,7 @@ import {
   Sparkles,
   Lightbulb
 } from "lucide-react";
-import { getMarketingPosts, seedMarketingPosts } from "@/app/actions/marketing";
+import { getMarketingPosts } from "@/app/actions/marketing";
 import { MarketingPostCard } from "@/components/admin/marketing-post-card";
 import { MarketingFormDialog } from "@/components/admin/marketing-form-dialog";
 import { ViewFullCalendarButton } from "@/components/admin/view-full-calendar-button";
@@ -15,15 +15,8 @@ export const dynamic = 'force-dynamic';
 export default async function MarketingPage() {
   const { data: posts } = await getMarketingPosts();
   
-  let displayPosts = posts;
+  const displayPosts = posts || [];
   
-  // Seeding inicial se não houver posts
-  if (!posts || posts.length === 0) {
-    await seedMarketingPosts();
-    const res = await getMarketingPosts();
-    displayPosts = res.data || [];
-  }
-
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-end">
