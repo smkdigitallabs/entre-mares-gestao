@@ -97,3 +97,21 @@ export async function completeImprovement(formData: FormData): Promise<void> {
     throw new Error("Falha ao concluir melhoria");
   }
 }
+
+export async function deleteImprovement(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { error: "Não autorizado" };
+
+  try {
+    await prisma.improvement.update({
+      where: { id },
+      data: { deletedAt: new Date() }
+    });
+
+    revalidatePath("/melhorias");
+    return { success: true };
+  } catch (error) {
+    console.error("Erro ao excluir melhoria:", error);
+    return { error: "Falha ao excluir melhoria" };
+  }
+}

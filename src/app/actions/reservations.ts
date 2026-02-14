@@ -61,3 +61,20 @@ export async function getOccupancyStats() {
     return { success: false, error: "Falha ao calcular ocupação" };
   }
 }
+
+export async function deleteReservation(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
+  try {
+    await prisma.reservation.update({
+      where: { id },
+      data: { deletedAt: new Date() }
+    })
+    // Adicionar revalidatePath se houver uma página de reservas futuramente
+    return { success: true }
+  } catch (error) {
+    console.error("Erro ao excluir reserva:", error)
+    return { success: false, error: "Falha ao excluir reserva" }
+  }
+}

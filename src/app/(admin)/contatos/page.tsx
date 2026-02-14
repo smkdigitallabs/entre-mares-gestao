@@ -1,6 +1,7 @@
-import { getStrategicContacts } from "@/app/actions/knowledge"
+import { getStrategicContacts, deleteStrategicContact } from "@/app/actions/knowledge"
 import { Search, Plus, Phone, Mail, User } from "lucide-react"
 import { PageTutorial } from "@/components/admin/page-tutorial"
+import { DeleteButton } from "@/components/admin/delete-button"
 
 export default async function ContactsPage({
   searchParams,
@@ -55,6 +56,11 @@ export default async function ContactsPage({
                     <p className="text-sm font-medium text-primary mt-1">{contact.role}</p>
                   </div>
                 </div>
+                <DeleteButton 
+                  id={contact.id} 
+                  action={deleteStrategicContact} 
+                  confirmMessage="Deseja excluir este contato?"
+                />
               </div>
             </div>
             <div className="p-6 space-y-3">

@@ -1,6 +1,8 @@
 import { getPropertyById } from "@/app/actions/properties"
+import { deletePropertyChecklist } from "@/app/actions/knowledge"
 import { notFound } from "next/navigation"
 import { MapPin, User, Home, CheckSquare, Sparkles, AlertCircle, Plus } from "lucide-react"
+import { DeleteButton } from "@/components/admin/delete-button"
 
 export default async function PropertyDetailPage({
   params,
@@ -102,7 +104,14 @@ export default async function PropertyDetailPage({
                   <div key={checklist.id} className="rounded-xl border bg-card text-card-foreground shadow p-6">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-semibold">{checklist.title}</h3>
-                      {checklist.type === 'ai_generated' && <Sparkles className="h-4 w-4 text-purple-500" />}
+                      <div className="flex items-center gap-1">
+                        {checklist.type === 'ai_generated' && <Sparkles className="h-4 w-4 text-purple-500 mr-1" />}
+                        <DeleteButton 
+                          id={checklist.id} 
+                          action={(id) => deletePropertyChecklist(id, params.id)} 
+                          confirmMessage="Deseja excluir este checklist?"
+                        />
+                      </div>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">
                       {checklist.type === 'ai_generated' ? 'Gerado por IA' : 'Manual'} • {new Date(checklist.createdAt).toLocaleDateString()}

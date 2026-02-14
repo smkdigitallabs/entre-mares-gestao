@@ -59,6 +59,23 @@ export async function createKnowledgeEntry(data: { problem: string; solution: st
   }
 }
 
+export async function deleteKnowledgeEntry(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
+  try {
+    await prisma.knowledgeBase.update({
+      where: { id },
+      data: { deletedAt: new Date() }
+    })
+    revalidatePath('/base-conhecimento')
+    return { success: true }
+  } catch (error) {
+    console.error("Erro ao excluir entrada na base de conhecimento:", error)
+    return { success: false, error: "Falha ao excluir entrada" }
+  }
+}
+
 // --- Strategic Contacts ---
 
 export async function getStrategicContacts(search?: string) {
@@ -116,6 +133,23 @@ export async function createStrategicContact(data: { name: string; role: string;
   }
 }
 
+export async function deleteStrategicContact(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
+  try {
+    await prisma.strategicContact.update({
+      where: { id },
+      data: { deletedAt: new Date() }
+    })
+    revalidatePath('/contatos')
+    return { success: true }
+  } catch (error) {
+    console.error("Erro ao excluir contato estratégico:", error)
+    return { success: false, error: "Falha ao excluir contato" }
+  }
+}
+
 // --- Property Checklists ---
 
 export async function getPropertyChecklists(propertyId: string) {
@@ -155,5 +189,22 @@ export async function createPropertyChecklist(data: { propertyId: string; title:
   } catch (error) {
     console.error("Erro ao criar checklist da propriedade:", error)
     return { success: false, error: "Falha ao criar checklist" }
+  }
+}
+
+export async function deletePropertyChecklist(id: string, propertyId: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
+  try {
+    await prisma.propertyChecklist.update({
+      where: { id },
+      data: { deletedAt: new Date() }
+    })
+    revalidatePath(`/propriedades/${propertyId}`)
+    return { success: true }
+  } catch (error) {
+    console.error("Erro ao excluir checklist da propriedade:", error)
+    return { success: false, error: "Falha ao excluir checklist" }
   }
 }

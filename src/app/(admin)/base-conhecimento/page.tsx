@@ -1,6 +1,7 @@
-import { getKnowledgeBase } from "@/app/actions/knowledge"
+import { getKnowledgeBase, deleteKnowledgeEntry } from "@/app/actions/knowledge"
 import { Search, Plus, LifeBuoy } from "lucide-react"
 import { PageTutorial } from "@/components/admin/page-tutorial"
+import { DeleteButton } from "@/components/admin/delete-button"
 
 export default async function KnowledgeBasePage({
   searchParams,
@@ -49,7 +50,14 @@ export default async function KnowledgeBasePage({
                 <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
                   {entry.category || "Geral"}
                 </span>
-                <LifeBuoy className="h-4 w-4 text-muted-foreground" />
+                <div className="flex items-center gap-1">
+                  <LifeBuoy className="h-4 w-4 text-muted-foreground mr-1" />
+                  <DeleteButton 
+                    id={entry.id} 
+                    action={deleteKnowledgeEntry} 
+                    confirmMessage="Deseja excluir este registro da base de conhecimento?"
+                  />
+                </div>
               </div>
               <h3 className="text-lg font-semibold leading-none tracking-tight line-clamp-2">{entry.problem}</h3>
             </div>

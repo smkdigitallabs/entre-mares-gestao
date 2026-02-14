@@ -1,9 +1,10 @@
-import { getImprovements, completeImprovement } from "@/app/actions/improvements";
+import { getImprovements, completeImprovement, deleteImprovement } from "@/app/actions/improvements";
 import { currentUser } from "@clerk/nextjs/server";
 import { CheckCircle2, Lightbulb } from "lucide-react";
 import { ImprovementForm } from "@/components/admin/improvement-form";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { PageTutorial } from "@/components/admin/page-tutorial";
+import { DeleteButton } from "@/components/admin/delete-button";
 
 const DEV_EMAIL = (process.env.DEV_EMAIL || "smkdigitallabs@gmail.com").toLowerCase();
 
@@ -95,16 +96,23 @@ export default async function MelhoriasPage() {
                     </div>
 
                     <div className="flex flex-col items-end gap-2 min-w-[140px]">
-                      <span
-                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase border ${
-                          isCompleted
-                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                            : "bg-amber-50 text-amber-700 border-amber-200"
-                        }`}
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                        {isCompleted ? "Concluída" : "Em avaliação"}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase border ${
+                            isCompleted
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                              : "bg-amber-50 text-amber-700 border-amber-200"
+                          }`}
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                          {isCompleted ? "Concluída" : "Em avaliação"}
+                        </span>
+                        <DeleteButton 
+                          id={improvement.id} 
+                          action={deleteImprovement} 
+                          confirmMessage="Deseja excluir esta sugestão de melhoria?"
+                        />
+                      </div>
 
                       {!isCompleted && isDeveloper && (
                         <form action={completeImprovement}>
