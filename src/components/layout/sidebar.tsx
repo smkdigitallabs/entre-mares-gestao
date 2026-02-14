@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
+  LifeBuoy,
+  Users,
   LayoutDashboard, 
   DollarSign, 
   Calendar, 
@@ -26,6 +28,8 @@ const menuItems = [
   { name: "Marketing", href: "/marketing", icon: Megaphone },
   { name: "Documentos", href: "/documentos", icon: FileText },
   { name: "Propriedades", href: "/propriedades", icon: Home },
+  { name: "Base de Conhecimento", href: "/base-conhecimento", icon: LifeBuoy },
+  { name: "Contatos", href: "/contatos", icon: Users },
   { name: "Melhorias", href: "/melhorias", icon: Lightbulb },
 ];
 

@@ -34,7 +34,7 @@ export async function getProperties(search?: string) {
   }
 }
 
-export async function createProperty(data: { name: string; address: string; ownerId?: string }) {
+export async function createProperty(data: { name: string; address: string; ownerId?: string; amenities?: string }) {
   const { userId } = await auth();
   if (!userId) return { success: false, error: "Não autorizado" };
 
@@ -44,6 +44,7 @@ export async function createProperty(data: { name: string; address: string; owne
         name: data.name,
         address: data.address,
         ownerId: data.ownerId,
+        amenities: data.amenities,
       }
     })
     revalidatePath('/propriedades')
@@ -51,6 +52,49 @@ export async function createProperty(data: { name: string; address: string; owne
   } catch (error) {
     console.error("Erro ao criar propriedade:", error)
     return { success: false, error: "Falha ao criar propriedade" }
+  }
+}
+
+export async function updateProperty(id: string, data: { name?: string; address?: string; ownerId?: string; amenities?: string }) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
+  try {
+    await prisma.property.update({
+      where: { id },
+      data: {
+        name: data.name,
+        address: data.address,
+        ownerId: data.ownerId,
+        amenities: data.amenities,
+      }
+    })
+    revalidatePath('/propriedades')
+    revalidatePath(`/propriedades/${id}`)
+    return { success: true }
+  } catch (error) {
+    console.error("Erro ao atualizar propriedade:", error)
+    return { success: false, error: "Falha ao atualizar propriedade" }
+  }
+}
+
+export async function getPropertyById(id: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: "Não autorizado" };
+
+  try {
+    const property = await prisma.property.findUnique({
+      where: { id, deletedAt: null },
+      include: {
+        checklists: {
+          where: { deletedAt: null }
+        }
+      }
+    })
+    return { success: true, data: property }
+  } catch (error) {
+    console.error("Erro ao buscar propriedade:", error)
+    return { success: false, error: "Falha ao buscar propriedade" }
   }
 }
 
