@@ -35,12 +35,17 @@ export const TUTORIALS: Record<string, PageTutorialData> = {
     steps: [
       {
         title: "Fluxo de Caixa",
-        description: "Visualize todas as entradas (ganhos) e saídas (despesas) de forma clara e organizada.",
+        description: "Visualize todas as entradas (ganhos) e saídas (despesas). Use isso para manter o controle da saúde financeira do seu negócio.",
         targetId: "finance-list"
       },
       {
-        title: "Categorias",
-        description: "As transações são categorizadas para que você saiba exatamente onde está gastando e de onde vem seu lucro.",
+        title: "Lançamentos",
+        description: "Registre novos ganhos de reservas ou despesas de manutenção. Cada lançamento ajuda a compor o lucro real do mês.",
+        targetId: "new-transaction-btn"
+      },
+      {
+        title: "Categorização",
+        description: "Classifique gastos como 'Limpeza', 'Manutenção' ou 'Taxas' para entender para onde o dinheiro está indo.",
         targetId: "finance-filters"
       }
     ]
@@ -50,12 +55,17 @@ export const TUTORIALS: Record<string, PageTutorialData> = {
     steps: [
       {
         title: "Gestão de Tarefas",
-        description: "Controle check-ins, check-outs, limpezas e manutenções em um só lugar.",
+        description: "Acompanhe o que precisa ser feito hoje. Check-ins, limpezas e reparos aparecem aqui para que nada seja esquecido.",
         targetId: "task-list"
       },
       {
-        title: "Calendário",
-        description: "Visualize suas tarefas por dia, amanhã ou semana para planejar sua rotina.",
+        title: "Check-in e Check-out",
+        description: "Marque o status das tarefas conforme são concluídas para manter a operação sincronizada.",
+        targetId: "task-status-toggle"
+      },
+      {
+        title: "Calendário Semanal",
+        description: "Planeje sua semana visualizando a carga de trabalho futura. Isso ajuda a antecipar contratações de diaristas ou técnicos.",
         targetId: "calendar-widget"
       }
     ]
@@ -64,9 +74,14 @@ export const TUTORIALS: Record<string, PageTutorialData> = {
     title: "Marketing & Divulgação",
     steps: [
       {
-        title: "Presença Digital",
-        description: "Aqui você gerencia como sua marca é vista no Instagram e outras redes sociais.",
+        title: "Estratégia de Conteúdo",
+        description: "Planeje postagens para Instagram e WhatsApp. O sistema sugere tons de voz que combinam com a essência da Entre Marés.",
         targetId: "marketing-overview"
+      },
+      {
+        title: "IA de Legendas",
+        description: "Use o gerador de posts para criar legendas que encantam hóspedes e atraem proprietários, mantendo o padrão visual e de texto.",
+        targetId: "new-post-btn"
       }
     ]
   },
@@ -74,9 +89,14 @@ export const TUTORIALS: Record<string, PageTutorialData> = {
     title: "Central de Documentos",
     steps: [
       {
-        title: "Manuais e Guias",
-        description: "Acesse todos os documentos oficiais, manuais operacionais e guias do hóspede.",
+        title: "Biblioteca Viva",
+        description: "Consulte manuais operacionais e diretrizes estratégicas. Tenha os padrões da empresa sempre à mão para consulta rápida.",
         targetId: "document-list"
+      },
+      {
+        title: "Guia do Hóspede",
+        description: "Baixe e envie modelos de guia para seus clientes, garantindo que eles tenham todas as informações da casa e da região.",
+        targetId: "download-guide-btn"
       }
     ]
   },
@@ -84,9 +104,44 @@ export const TUTORIALS: Record<string, PageTutorialData> = {
     title: "Gestão de Propriedades",
     steps: [
       {
-        title: "Seus Imóveis",
-        description: "Visualize e gerencie todos os imóveis cadastrados sob sua administração.",
+        title: "Portfólio de Imóveis",
+        description: "Cadastre e visualize as casas que você gerencia. Cada imóvel tem suas próprias características e equipamentos listados.",
         targetId: "property-grid"
+      },
+      {
+        title: "Detalhes e Checklists",
+        description: "Clique em um imóvel para ver o inventário completo e gerar checklists de preparo personalizados via IA.",
+        targetId: "property-card-link"
+      }
+    ]
+  },
+  "/base-conhecimento": {
+    title: "Base de Conhecimento",
+    steps: [
+      {
+        title: "Problemas e Soluções",
+        description: "Um repositório de experiências. Quando algo quebrar ou houver um imprevisto, registre aqui como foi resolvido.",
+        targetId: "knowledge-search"
+      },
+      {
+        title: "Prevenção",
+        description: "Consulte soluções antigas para resolver problemas atuais com rapidez, sem precisar incomodar o proprietário ou buscar do zero.",
+        targetId: "knowledge-list"
+      }
+    ]
+  },
+  "/contatos": {
+    title: "Contatos Estratégicos",
+    steps: [
+      {
+        title: "Rede de Apoio",
+        description: "Mantenha contatos de encanadores, eletricistas e técnicos de confiança organizados por especialidade.",
+        targetId: "contacts-list"
+      },
+      {
+        title: "Acesso Rápido",
+        description: "Ligue ou envie um WhatsApp diretamente daqui em momentos de emergência durante uma estadia.",
+        targetId: "contact-actions"
       }
     ]
   },
@@ -95,8 +150,13 @@ export const TUTORIALS: Record<string, PageTutorialData> = {
     steps: [
       {
         title: "Sugestões e Falhas",
-        description: "Envie suas ideias de melhoria ou reporte falhas diretamente para o desenvolvedor.",
+        description: "Sua linha direta com o desenvolvedor. Sugira novas telas, funções ou reporte erros encontrados no dia a dia.",
         targetId: "improvement-form"
+      },
+      {
+        title: "Histórico de Evolução",
+        description: "Acompanhe o que já foi implementado e em qual versão do sistema a sua sugestão foi atendida.",
+        targetId: "improvements-list"
       }
     ]
   }

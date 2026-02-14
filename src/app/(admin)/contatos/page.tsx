@@ -1,5 +1,6 @@
 import { getStrategicContacts } from "@/app/actions/knowledge"
 import { Search, Plus, Phone, Mail, User } from "lucide-react"
+import { PageTutorial } from "@/components/admin/page-tutorial"
 
 export default async function ContactsPage({
   searchParams,
@@ -14,9 +15,12 @@ export default async function ContactsPage({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Contatos Estratégicos</h1>
-          <p className="text-muted-foreground">
-            Sua rede de apoio para emergências e manutenção.
-          </p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-muted-foreground">
+              Sua rede de apoio para emergências e manutenção.
+            </p>
+            <PageTutorial />
+          </div>
         </div>
         <button className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
           <Plus className="h-4 w-4" /> Novo Contato
@@ -37,7 +41,7 @@ export default async function ContactsPage({
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div id="contacts-list" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {contacts?.map((contact) => (
           <div key={contact.id} className="rounded-xl border bg-card text-card-foreground shadow">
             <div className="p-6 pb-2">

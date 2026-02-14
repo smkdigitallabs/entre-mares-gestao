@@ -1,5 +1,6 @@
 import { getKnowledgeBase } from "@/app/actions/knowledge"
 import { Search, Plus, LifeBuoy } from "lucide-react"
+import { PageTutorial } from "@/components/admin/page-tutorial"
 
 export default async function KnowledgeBasePage({
   searchParams,
@@ -14,16 +15,19 @@ export default async function KnowledgeBasePage({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Base de Conhecimento</h1>
-          <p className="text-muted-foreground">
-            Problemas comuns e soluções para agilizar seu atendimento.
-          </p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-muted-foreground">
+              Problemas comuns e soluções para agilizar seu atendimento.
+            </p>
+            <PageTutorial />
+          </div>
         </div>
         <button className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
           <Plus className="h-4 w-4" /> Novo Registro
         </button>
       </div>
 
-      <div className="flex items-center gap-2 max-w-sm">
+      <div id="knowledge-search" className="flex items-center gap-2 max-w-sm">
         <div className="relative flex-1">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <form>
@@ -37,7 +41,7 @@ export default async function KnowledgeBasePage({
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div id="knowledge-list" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {entries?.map((entry) => (
           <div key={entry.id} className="flex flex-col rounded-xl border bg-card text-card-foreground shadow">
             <div className="p-6 pt-6">
